@@ -45,6 +45,20 @@ curl -X POST http://localhost:8000/visualize \
 
 Interactive docs: http://localhost:8000/docs
 
+### Web UI
+
+A minimal single-page frontend ships in `app/static/` and is served at the root —
+open **http://localhost:8000** in a browser. Two modes:
+
+- **Query** — type a natural-language question (with optional filters) and render
+  the live result.
+- **Load JSON** — load any bundled `examples/` file, upload a response file, or
+  paste response JSON.
+
+Charts render with Vega-Lite (bar / time series / histogram / grouped bar /
+scatter), networks with vis-network. Click any data point to see its source-trial
+citations; a "no matching trials" response shows its message instead of a chart.
+
 ---
 
 ## Request Schema
@@ -144,8 +158,10 @@ The `app/` package is organized by layer, so each concern can change independent
 ```
 app/
   config.py            # pydantic-settings: model, API key, record caps, base URL, turn limit
-  main.py              # FastAPI app (HTTP layer)
+  main.py              # FastAPI app (HTTP layer) — also serves the web UI + examples
+  logging_config.py    # structlog setup
   models.py            # request/response Pydantic schemas
+  static/              # bundled single-page web UI (index.html + app.js)
 
   prompts/system.md    # the agent's system prompt as editable text (swap without code changes)
   llm/provider.py      # OpenAI wrapper — the single seam to the LLM SDK
@@ -354,8 +370,9 @@ assistant. Claude was used to:
    co-occurrence, and the code-gated "no data" notice (scripted agent loop).
 4. Exact-count correctness was spot-checked against the live API: per-bucket bar
    values match standalone `countTotal` queries (e.g. diabetes Phase 3 = 2,446).
-5. End-to-end runs against the live API produced the 6 example outputs in
-   `examples/`, covering every supported visualization type.
+5. End-to-end runs against the live API produced the 8 example outputs in
+   `examples/`, covering every supported visualization type (incl. grouped_bar
+   and scatter).
 
 The solution was designed deliberately: architecture trade-offs were reasoned
 through before writing code (e.g. why tool-calling over a single prompt, why
