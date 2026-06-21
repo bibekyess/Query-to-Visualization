@@ -1,0 +1,37 @@
+"""
+Deterministic viz type selection.
+
+Rules are applied in priority order; the LLM's viz_hint only breaks ties for
+cases the rules don't cover. This keeps chart selection predictable and prevents
+the model from choosing an inappropriate type for time-series or histogram data.
+"""
+
+# These group_by values always produce an ordered x-axis that should be rendered as a line chart.
+_TIME_FIELDS = {"start_year", "start_month", "completion_year", "completion_month"}
+
+# Enrollment bucket produces ordered size ranges — a histogram, not a bar chart.
+_CONTINUOUS_FIELDS = {"enrollment_bucket"}
+
+# Only allow known types so an invalid LLM hint can't produce a broken spec.
+_VALID_TYPES = {"bar_chart", "time_series", "histogram", "scatter", "network_graph", "grouped_bar"}
+
+
+def select(group_by: str, viz_hint: str | None) -> str:
+    # Network intent always wins — build_network already chose this path, never override it.
+    if viz_hint == "network_graph":
+        return "network_graph"
+
+    # Time fields have inherent ordering; a line chart communicates that better than bars.
+    if group_by in _TIME_FIELDS:
+        return "time_series"
+
+    # Enrollment buckets are ordered size ranges — histogram is the correct representation.
+    if group_by in _CONTINUOUS_FIELDS:
+        return "histogram"
+
+    # For everything else, trust the LLM's hint if it named a recognised type.
+    if viz_hint and viz_hint in _VALID_TYPES:
+        return viz_hint
+
+    # Default: categorical distribution → bar chart.
+    return "bar_chart"
