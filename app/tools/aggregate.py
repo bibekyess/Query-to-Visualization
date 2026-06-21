@@ -5,6 +5,7 @@ import uuid
 from collections import defaultdict
 
 from app.clinicaltrials import extractors as ct
+from app.config import get_settings
 from app.tools.store import AGG_RESULTS, DATASETS
 
 # Human-readable labels for the API's ALL_CAPS phase enum values.
@@ -105,8 +106,7 @@ def aggregate(
         excerpt = ct.extract_brief_summary(study)[:200]
         for group in _study_groups(study, group_by):
             counts[group] += 1
-            # Cap at 3 citations per group to keep the response payload manageable.
-            if len(citations_map[group]) < 3:
+            if len(citations_map[group]) < get_settings().citations_per_group:
                 citations_map[group].append({"nct_id": nct_id, "excerpt": excerpt})
 
     sorted_groups = sorted(counts.items(), key=lambda x: x[1], reverse=True)[:top_n]

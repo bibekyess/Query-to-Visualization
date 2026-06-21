@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClinicalTrials Viz</title>
+  <link rel="stylesheet" href="https://unpkg.com/vis-network/styles/vis-network.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; background: #f5f5f5; color: #222; }
+    .layout { display: flex; height: 100vh; }
+
+    /* Sidebar */
+    .sidebar { width: 300px; min-width: 300px; background: #fff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column; overflow-y: auto; }
+    .sidebar-header { padding: 16px; border-bottom: 1px solid #e0e0e0; }
+    .sidebar-header h1 { font-size: 15px; font-weight: 600; }
+    .sidebar-header p { color: #666; font-size: 12px; margin-top: 3px; }
+    .tabs { display: flex; border-bottom: 1px solid #e0e0e0; }
+    .tab { flex: 1; padding: 10px; text-align: center; cursor: pointer; font-size: 13px; color: #666; border-bottom: 2px solid transparent; user-select: none; }
+    .tab.active { color: #2563eb; border-bottom-color: #2563eb; font-weight: 500; }
+    .tab-content { display: none; padding: 16px; }
+    .tab-content.active { display: block; }
+
+    /* Form elements */
+    label { display: block; font-size: 12px; color: #555; margin-bottom: 4px; margin-top: 12px; font-weight: 500; }
+    label:first-child { margin-top: 0; }
+    input[type="text"], input[type="number"], textarea, select {
+      width: 100%; padding: 7px 9px; border: 1px solid #d0d0d0; border-radius: 4px;
+      font-size: 13px; font-family: inherit; color: #222; background: #fff;
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 2px #dbeafe; }
+    .btn { display: block; width: 100%; padding: 9px; margin-top: 14px; background: #2563eb; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 500; transition: background 0.15s; }
+    .btn:hover { background: #1d4ed8; }
+    .btn:disabled { background: #93c5fd; cursor: not-allowed; }
+    .btn-secondary { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+    .btn-secondary:hover:not(:disabled) { background: #e5e7eb; }
+    .filters-toggle { color: #2563eb; font-size: 12px; cursor: pointer; margin-top: 10px; display: inline-block; user-select: none; }
+    #filters-panel { display: none; }
+    #filters-panel.open { display: block; }
+    .hint { font-size: 11px; color: #9ca3af; margin-top: 3px; }
+
+    /* Examples grid */
+    .examples-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+    .example-btn { padding: 8px 6px; font-size: 11px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; cursor: pointer; text-align: center; color: #374151; transition: background 0.1s; }
+    .example-btn:hover { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
+    .divider { border: none; border-top: 1px solid #e8e8e8; margin: 14px 0; }
+
+    /* Main area */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .chart-header { padding: 18px 24px 4px; }
+    .chart-header h2 { font-size: 16px; font-weight: 600; color: #111; }
+    .chart-area { flex: 1; padding: 12px 24px; overflow: auto; }
+    #chart { width: 100%; background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 16px; }
+    #network { width: 100%; height: 480px; background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; }
+    .placeholder { display: flex; align-items: center; justify-content: center; min-height: 420px; color: #9ca3af; flex-direction: column; gap: 10px; background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; }
+    .placeholder svg { opacity: 0.25; }
+    .placeholder span { font-size: 13px; }
+
+    /* Metadata bar */
+    .metadata { padding: 0 24px 16px; font-size: 12px; }
+    .meta-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+    .meta-badge { background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 3px; padding: 2px 8px; color: #374151; }
+    .warning { color: #92400e; background: #fffbeb; border: 1px solid #fcd34d; border-radius: 3px; padding: 4px 10px; margin-top: 5px; }
+    .meta-interp { color: #6b7280; font-style: italic; margin-top: 4px; }
+
+    /* Citations panel */
+    .citations-panel { padding: 12px 24px; border-top: 1px solid #e8e8e8; background: #fafafa; }
+    .citations-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .citations-title { font-size: 13px; font-weight: 600; color: #111; }
+    .citations-hint { font-size: 12px; color: #9ca3af; padding: 6px 24px 12px; border-top: 1px solid #e8e8e8; }
+    .citations-close { background: none; border: none; cursor: pointer; color: #9ca3af; font-size: 20px; line-height: 1; padding: 0 4px; }
+    .citations-close:hover { color: #374151; }
+    .citation-card { padding: 9px 12px; margin-bottom: 6px; background: #fff; border: 1px solid #e2e8f0; border-radius: 5px; }
+    .citation-link { font-size: 12px; font-weight: 600; color: #2563eb; text-decoration: none; }
+    .citation-link:hover { text-decoration: underline; }
+    .citation-excerpt { font-size: 12px; color: #555; line-height: 1.5; margin-top: 4px; }
+
+    /* Inline error messages */
+    .error-msg { color: #dc2626; background: #fef2f2; border: 1px solid #fca5a5; border-radius: 4px; padding: 8px 10px; margin-top: 8px; font-size: 12px; }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>ClinicalTrials Viz</h1>
+      <p>Query the API or load a JSON file</p>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" id="tab-query-btn" onclick="switchTab('query')">Query</div>
+      <div class="tab" id="tab-json-btn" onclick="switchTab('json')">Load JSON</div>
+    </div>
+
+    <!-- Query tab -->
+    <div id="tab-query" class="tab-content active">
+      <label for="query-input">Natural language query</label>
+      <textarea id="query-input" rows="3" placeholder="e.g. How has pembrolizumab trial count changed per year since 2015?"></textarea>
+      <p class="hint">Ctrl+Enter to submit</p>
+
+      <span class="filters-toggle" id="filters-toggle" onclick="toggleFilters()">▸ Filters (optional)</span>
+      <div id="filters-panel">
+        <label for="f-condition">Condition</label>
+        <input id="f-condition" type="text" placeholder="e.g. diabetes">
+
+        <label for="f-drug">Drug name</label>
+        <input id="f-drug" type="text" placeholder="e.g. pembrolizumab">
+
+        <label for="f-status">Status</label>
+        <select id="f-status">
+          <option value="">Any</option>
+          <option value="RECRUITING">RECRUITING</option>
+          <option value="COMPLETED">COMPLETED</option>
+          <option value="ACTIVE_NOT_RECRUITING">ACTIVE_NOT_RECRUITING</option>
+          <option value="NOT_YET_RECRUITING">NOT_YET_RECRUITING</option>
+        </select>
+
+        <label for="f-start-year">Start year</label>
+        <input id="f-start-year" type="number" placeholder="e.g. 2015" min="1990" max="2030">
+
+        <label for="f-end-year">End year</label>
+        <input id="f-end-year" type="number" placeholder="e.g. 2024" min="1990" max="2030">
+      </div>
+
+      <button class="btn" id="query-btn" onclick="submitQuery()">Visualize →</button>
+      <div id="query-error" class="error-msg" style="display:none"></div>
+    </div>
+
+    <!-- Load JSON tab -->
+    <div id="tab-json" class="tab-content">
+      <label>Load example</label>
+      <div class="examples-grid">
+        <button class="example-btn" onclick="loadExample('01_time_series')">01 Time Series</button>
+        <button class="example-btn" onclick="loadExample('02_bar_chart')">02 Bar Chart</button>
+        <button class="example-btn" onclick="loadExample('03_geographic')">03 Geographic</button>
+        <button class="example-btn" onclick="loadExample('04_network_graph')">04 Network</button>
+        <button class="example-btn" onclick="loadExample('05_histogram')">05 Histogram</button>
+        <button class="example-btn" onclick="loadExample('06_scatter')">06 Scatter</button>
+      </div>
+
+      <hr class="divider">
+
+      <label for="file-input">Upload JSON file</label>
+      <input type="file" id="file-input" accept=".json" onchange="loadFile(event)">
+
+      <hr class="divider">
+
+      <label for="json-paste">Paste JSON</label>
+      <textarea id="json-paste" rows="5" placeholder='{"visualization": {...}, "response_metadata": {...}}'></textarea>
+      <button class="btn btn-secondary" onclick="renderPasted()">Render →</button>
+      <div id="json-error" class="error-msg" style="display:none"></div>
+    </div>
+  </aside>
+
+  <!-- Main chart area -->
+  <main class="main">
+    <div class="chart-header">
+      <h2 id="chart-title"></h2>
+    </div>
+    <div class="chart-area">
+      <div id="placeholder" class="placeholder">
+        <svg width="52" height="52" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path d="M3 3v18h18M7 16l4-4 4 4 4-8"/>
+        </svg>
+        <span>Submit a query or load a JSON file to see a visualization</span>
+      </div>
+      <div id="chart" style="display:none"></div>
+      <div id="network" style="display:none"></div>
+    </div>
+    <div class="citations-hint" id="citations-hint" style="display:none">Click any data point to see source trial citations</div>
+    <div class="citations-panel" id="citations-panel" style="display:none">
+      <div class="citations-header">
+        <span class="citations-title" id="citations-title"></span>
+        <button class="citations-close" onclick="hideCitations()" title="Close">×</button>
+      </div>
+      <div id="citations-list"></div>
+    </div>
+    <div class="metadata" id="metadata" style="display:none">
+      <div class="meta-row" id="meta-badges"></div>
+      <div id="meta-warnings"></div>
+      <div class="meta-interp" id="meta-interpretation"></div>
+    </div>
+  </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

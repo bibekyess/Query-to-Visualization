@@ -28,6 +28,10 @@ class Settings(BaseSettings):
     default_max_records: int = 5_000     # per-query default when the agent doesn't override
     max_records_cap: int = 10_000        # hard ceiling to prevent runaway fetches
 
+    # --- Citations ---
+    # For demo, capped at lower citations per group to keep the response payload manageable.
+    citations_per_group: int = 3         # max citations kept per aggregation bucket
+
     # --- Agent loop ---
     agent_max_turns: int = 12            # safety bound on tool-calling iterations
 

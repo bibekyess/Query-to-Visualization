@@ -1,6 +1,8 @@
 """FastAPI application — the HTTP layer."""
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.agent import run_agent
 from app.models import QueryRequest, VisualizationResponse
@@ -18,6 +20,16 @@ app.add_middleware(
     allow_methods=["POST", "GET"],
     allow_headers=["*"],
 )
+
+# Serve the frontend and example JSON files as static assets.
+# Paths are relative to the project root (where uvicorn is launched from).
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+app.mount("/examples-data", StaticFiles(directory="examples"), name="examples-data")
+
+
+@app.get("/", include_in_schema=False)
+def root() -> RedirectResponse:
+    return RedirectResponse(url="/static/index.html")
 
 
 # TODO: Maybe use async dev and async OpenAI client?
