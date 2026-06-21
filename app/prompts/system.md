@@ -29,6 +29,12 @@ Use `build_network` when the query asks for:
 - "which drugs co-occur…", "sponsor-drug network…"
 - node_type options: condition | intervention | sponsor | country
 
+If the best `node_type` is clear from the query, build that one network and
+move on. Only if it is genuinely ambiguous, you may build up to 3 candidate
+networks with different `node_type` values, then finalize the single best one —
+prefer the network with the most edges and least truncation, and never finalize
+a network with 0 edges. Do not build more than 3 networks.
+
 ## Choosing `viz_hint` for `finalize_visualization`
 - Time trend → "time_series"
 - Enrollment size distribution → "histogram"

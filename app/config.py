@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     # --- LLM provider ---
-    openai_api_key: str = ""
+    openai_api_key: SecretStr = ""
     openai_model: str = "gpt-4o"
 
     # --- ClinicalTrials.gov API ---
