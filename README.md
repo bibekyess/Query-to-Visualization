@@ -58,7 +58,7 @@ Content-Type: application/json
   "filters": {                        — all optional
     "drug_name":  string              — drug / intervention
     "condition":  string              — disease or condition
-    "phase":      string[]            — e.g. ["3"] or ["1","2"]
+    "phase":      string[]            — EARLY_PHASE1 | PHASE1 | PHASE2 | PHASE3 | PHASE4 | NA
     "sponsor":    string              — sponsor name
     "country":    string              — country name
     "start_year": integer             — trials starting from this year
@@ -127,6 +127,42 @@ Each `nct_id` links directly to `https://clinicaltrials.gov/study/<nct_id>`.
 
 ---
 
+## Project Layout
+
+The `app/` package is organized by layer, so each concern can change independently:
+
+```
+app/
+  config.py            # pydantic-settings: model, API key, record caps, base URL, turn limit
+  main.py              # FastAPI app (HTTP layer)
+  models.py            # request/response Pydantic schemas
+
+  prompts/system.md    # the agent's system prompt as editable text (swap without code changes)
+  llm/provider.py      # OpenAI wrapper — the single seam to the LLM SDK
+
+  agent/
+    loop.py            # tool-calling control loop
+    tool_schemas.py    # OpenAI function-calling definitions
+    registry.py        # tool name → Python function map
+
+  tools/
+    store.py           # in-memory dataset/result handles
+    search.py  aggregate.py  network.py  finalize.py   # the four agent tools
+
+  clinicaltrials/
+    client.py          # HTTP + pagination + count
+    filters.py         # Essie filter.advanced builder
+    extractors.py      # field extraction from study records
+
+  viz/selector.py      # deterministic chart-type rules
+```
+
+To retune the agent's behavior, edit `prompts/system.md`. To swap LLM providers,
+reimplement `llm/provider.py`. To add a new aggregation field, edit `tools/aggregate.py`
+plus the `group_by` enum in `agent/tool_schemas.py`.
+
+---
+
 ## Architecture & Design Decisions
 
 ### Tool-calling agent (not code-gen, not single-plan)
@@ -154,7 +190,7 @@ encoding labels (axis names).
 
 ### Hybrid viz type selection
 
-1. **Deterministic rules** in `viz_selector.py` map the `group_by` field shape to
+1. **Deterministic rules** in `app/viz/selector.py` map the `group_by` field shape to
    chart type: time fields → `time_series`, continuous fields → `histogram`,
    default → `bar_chart`.
 2. The LLM may pass `viz_hint` to break ties (e.g. `"scatter"`, `"network_graph"`).

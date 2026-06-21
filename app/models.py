@@ -1,15 +1,31 @@
 from __future__ import annotations
+from enum import Enum
 from typing import Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
+
+
+# --- Enums ---
+
+class Phase(str, Enum):
+    """Canonical ClinicalTrials.gov Phase values (verified against the live API)."""
+    EARLY_PHASE1 = "EARLY_PHASE1"
+    PHASE1 = "PHASE1"
+    PHASE2 = "PHASE2"
+    PHASE3 = "PHASE3"
+    PHASE4 = "PHASE4"
+    NA = "NA"
 
 
 # --- Request models ---
 
 class Filters(BaseModel):
+    # use_enum_values so phase serializes back to plain strings (e.g. for the agent prompt).
+    model_config = ConfigDict(use_enum_values=True)
+
     # All fields are optional; the agent uses whichever are provided to narrow the API query.
     drug_name: str | None = None
     condition: str | None = None
-    phase: list[str] | None = None   # list because a query can cover multiple phases, e.g. ["1", "2"]
+    phase: list[Phase] | None = None   # canonical Phase values; multiple = OR, e.g. ["PHASE1", "PHASE2"]
     sponsor: str | None = None
     country: str | None = None
     start_year: int | None = None

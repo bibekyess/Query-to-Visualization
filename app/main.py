@@ -1,7 +1,9 @@
+"""FastAPI application — the HTTP layer."""
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from app.models import QueryRequest, VisualizationResponse
+
 from app.agent import run_agent
+from app.models import QueryRequest, VisualizationResponse
 
 app = FastAPI(
     title="ClinicalTrials.gov Query-to-Visualization Agent",
@@ -9,7 +11,7 @@ app = FastAPI(
     description="NL query → structured visualization spec backed by live ClinicalTrials.gov data.",
 )
 
-# CORS headers let a browser-based frontend call this API directly (e.g. from localhost:3000).
+# CORS headers let a browser-based frontend call this API directly
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,6 +20,7 @@ app.add_middleware(
 )
 
 
+# TODO: Maybe use async dev and async OpenAI client?
 # `def` (not `async def`) because run_agent calls sync httpx and the sync OpenAI client.
 # FastAPI automatically runs sync endpoints in a threadpool, so the event loop stays unblocked.
 @app.post("/visualize", response_model=VisualizationResponse)

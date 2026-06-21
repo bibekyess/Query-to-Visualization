@@ -31,27 +31,27 @@ QUERIES = [
             },
         },
     },
-    {
-        "name": "02_bar_chart",
-        "description": "Diabetes trial phase distribution (bar_chart)",
-        "body": {
-            "query": "How are diabetes trials distributed across phases?",
-            "filters": {
-                "condition": "diabetes",
-            },
-        },
-    },
-    {
-        "name": "03_geographic",
-        "description": "Countries with the most recruiting breast cancer trials (bar_chart by country)",
-        "body": {
-            "query": "Which countries have the most recruiting breast cancer trials?",
-            "filters": {
-                "condition": "breast cancer",
-                "status": "RECRUITING",
-            },
-        },
-    },
+    # {
+    #     "name": "02_bar_chart",
+    #     "description": "Diabetes trial phase distribution (bar_chart)",
+    #     "body": {
+    #         "query": "How are diabetes trials distributed across phases?",
+    #         "filters": {
+    #             "condition": "diabetes",
+    #         },
+    #     },
+    # },
+    # {
+    #     "name": "03_geographic",
+    #     "description": "Countries with the most recruiting breast cancer trials (bar_chart by country)",
+    #     "body": {
+    #         "query": "Which countries have the most recruiting breast cancer trials?",
+    #         "filters": {
+    #             "condition": "breast cancer",
+    #             "status": "RECRUITING",
+    #         },
+    #     },
+    # },
     {
         "name": "04_network_graph",
         "description": "Condition co-occurrence network in lung cancer trials (network_graph)",
@@ -62,27 +62,27 @@ QUERIES = [
             },
         },
     },
-    {
-        "name": "05_histogram",
-        "description": "Enrollment size distribution for Phase 3 cancer trials (histogram)",
-        "body": {
-            "query": "What is the distribution of enrollment sizes for Phase 3 cancer trials?",
-            "filters": {
-                "condition": "cancer",
-                "phase": ["3"],
-            },
-        },
-    },
-    {
-        "name": "06_scatter",
-        "description": "Scatter plot of trial counts by sponsor type for cardiovascular research (scatter)",
-        "body": {
-            "query": "Show a scatter plot of the number of cardiovascular trials by sponsor type.",
-            "filters": {
-                "condition": "cardiovascular",
-            },
-        },
-    },
+    # {
+    #     "name": "05_histogram",
+    #     "description": "Enrollment size distribution for Phase 3 cancer trials (histogram)",
+    #     "body": {
+    #         "query": "What is the distribution of enrollment sizes for Phase 3 cancer trials?",
+    #         "filters": {
+    #             "condition": "cancer",
+    #             "phase": ["3"],
+    #         },
+    #     },
+    # },
+    # {
+    #     "name": "06_scatter",
+    #     "description": "Scatter plot of trial counts by sponsor type for cardiovascular research (scatter)",
+    #     "body": {
+    #         "query": "Show a scatter plot of the number of cardiovascular trials by sponsor type.",
+    #         "filters": {
+    #             "condition": "cardiovascular",
+    #         },
+    #     },
+    # },
 ]
 
 # ─────────────────────────────────────────────────────────────────────────────
