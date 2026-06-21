@@ -75,7 +75,14 @@ def run_agent(request: QueryRequest) -> VisualizationResponse:
             if fn is None:
                 tool_result: Any = {"error": f"Unknown tool: {fn_name}"}
             else:
-                tool_result = fn(**fn_args)
+                # Guard execution: bad arguments (extra keys, invalid enum values) or
+                # any runtime failure become an error result fed back to the model so it
+                # can self-correct on the next turn, rather than 500-ing the request.
+                try:
+                    tool_result = fn(**fn_args)
+                except Exception as exc:
+                    log.warning("tool.error", name=fn_name, error=str(exc), exc_info=True)
+                    tool_result = {"error": f"{type(exc).__name__}: {exc}"}
 
             # A search that returns a dataset_id means chartable data exists.
             if fn_name == "search_trials" and isinstance(tool_result, dict) and tool_result.get("dataset_id"):

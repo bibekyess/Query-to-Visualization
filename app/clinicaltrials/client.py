@@ -30,7 +30,11 @@ def _get_with_retry(url: str, params: dict) -> dict:
     ClinicalTrials.gov's TLS fingerprint check. httpx uses its own TLS stack
     and gets 403 even with a spoofed User-Agent.
 
-    Retries with exponential back-off on HTTP 429 (rate limit: ~50 req/min).
+    Retries with exponential back-off on transient failures:
+      - HTTP 429 (rate limit: ~50 req/min) and 5xx server errors,
+      - connection errors and read timeouts (URLError / TimeoutError).
+    Client errors (4xx other than 429) fail fast — retrying a malformed query
+    is pointless, and the agent loop surfaces the error back to the model.
     """
     full_url = url + "?" + urllib.parse.urlencode(params)
     req = urllib.request.Request(full_url, headers={"Accept": "application/json"})
@@ -39,11 +43,18 @@ def _get_with_retry(url: str, params: dict) -> dict:
             with urllib.request.urlopen(req, timeout=30) as resp:
                 return json.loads(resp.read())
         except urllib.error.HTTPError as e:
-            if e.code == 429:
+            # HTTPError subclasses URLError, so it must be caught first.
+            if e.code in (429, 500, 502, 503, 504) and attempt < 3:
                 time.sleep(2 ** attempt)
                 continue
             raise
-    raise RuntimeError("Max retries exceeded after 429 responses")
+        except (urllib.error.URLError, TimeoutError):
+            # Connection reset / DNS failure / read timeout — transient, worth a retry.
+            if attempt < 3:
+                time.sleep(2 ** attempt)
+                continue
+            raise
+    raise RuntimeError("Max retries exceeded")
 
 
 def count_studies(params: dict) -> int:
