@@ -5,7 +5,7 @@ services:
     build: .
     image: bibekyess/query-to-viz-agent:0.1.0
     ports:
-      - "9072:8000"
+      - "8000:8000"
     env_file:
       - .env
     restart: unless-stopped
@@ -15,7 +15,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - "9073:8080"
+      - "8080:8080"
     environment:
       DOZZLE_FILTER: "label=com.docker.compose.project=query-to-viz-project"
       DOZZLE_AUTH_PROVIDER: none
