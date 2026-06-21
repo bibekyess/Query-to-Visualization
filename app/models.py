@@ -42,8 +42,9 @@ class QueryRequest(BaseModel):
 
 class Citation(BaseModel):
     # Each datum in the response carries back-links to the real trial records that produced it.
-    nct_id: str     # e.g. "NCT04345250" — links to clinicaltrials.gov/study/<nct_id>
-    excerpt: str    # first 200 chars of briefSummary, proving which record contributed
+    nct_id: str        # e.g. "NCT04345250" — links to clinicaltrials.gov/study/<nct_id>
+    excerpt: str       # the exact field value(s) placing this record in the bucket
+    source_field: str  # JSON path the excerpt was read from, e.g. "...designModule.phases"
 
 
 # --- Network graph models ---
@@ -63,7 +64,7 @@ class NetworkEdge(BaseModel):
 # --- Output models ---
 
 class Visualization(BaseModel):
-    type: str                              # bar_chart | time_series | histogram | scatter | network_graph | grouped_bar
+    type: str                              # bar_chart | time_series | histogram | network_graph
     title: str
     encoding: dict[str, Any]              # Vega-Lite-style channel map, e.g. {"x": {"field": "phase"}, "y": {"field": "count"}}
     data: list[dict[str, Any]] | None = None    # None for network_graph — use nodes/edges instead
@@ -78,6 +79,9 @@ class ResponseMetadata(BaseModel):
     time_granularity: str | None = None   # "month" or "year" when the x-axis is a date field
     truncated: bool = False               # True when total_count > fetched_count (sample only)
     count_verified: bool = False          # True when fetched_count == total_count (no sampling)
+    counts_exact: bool = False            # True when per-bucket counts are server-authoritative
+                                          # (full corpus fetched, or computed via per-group countTotal),
+                                          # False when bars are approximated from a truncated sample
     count_server: int | None = None       # populated when counts don't match, to surface the gap
     query_interpretation: str = ""
     warnings: list[str] = Field(default_factory=list)

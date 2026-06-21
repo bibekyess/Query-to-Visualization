@@ -37,8 +37,7 @@ def root() -> RedirectResponse:
     return RedirectResponse(url="/static/index.html")
 
 
-# TODO: Maybe use async dev and async OpenAI client?
-# `def` (not `async def`) because run_agent calls sync httpx and the sync OpenAI client.
+# `def` (not `async def`) because run_agent uses the sync HTTP and OpenAI clients.
 # FastAPI automatically runs sync endpoints in a threadpool, so the event loop stays unblocked.
 @app.post("/visualize", response_model=VisualizationResponse)
 def visualize(request: QueryRequest) -> VisualizationResponse:

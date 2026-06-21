@@ -27,15 +27,18 @@
           "citations": [
             {
               "nct_id": "NCT02574533",
-              "excerpt": "This is an open label Pilot study to evaluate the combination of Vigil™ and pembrolizumab in patients with incurable locally advanced or metastatic melanoma. Patients undergoing a standard of care sur"
+              "excerpt": "2015-10",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT02332980",
-              "excerpt": "This phase II trial studies how well pembrolizumab alone or with idelalisib or ibrutinib works in treating patients with chronic lymphocytic leukemia or other low-grade B-cell non-Hodgkin lymphomas th"
+              "excerpt": "2015-02-19",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT02305186",
-              "excerpt": "The purpose of this clinical trial is to study an experimental drug called pembrolizumab or MK-3475 for use in combination with chemotherapy and radiation therapy for patients with resectable (surgica"
+              "excerpt": "2015-03",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             }
           ]
         },
@@ -45,15 +48,18 @@
           "citations": [
             {
               "nct_id": "NCT02691026",
-              "excerpt": "This is phase II, single arm, open-label, interventional trial of pembrolizumab (MK-3475) in subjects with metastatic or locally advanced/unresectable or metastatic malignant peripheral nerve sheath t"
+              "excerpt": "2016-06",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT02899793",
-              "excerpt": "Primary Objectives: To assess the antitumor activity (proportion of objective response by RECIST 1.1 criteria) of pembrolizumab with objective tumor response in patients with persistent, recurrent or "
+              "excerpt": "2016-09",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT02853344",
-              "excerpt": "The purpose of this study is to assess the safety and efficacy of monotherapy pembrolizumab (MK-3475) in participants with renal cell carcinoma (RCC). There will be two cohorts in this study: Cohort A"
+              "excerpt": "2016-09-30",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             }
           ]
         },
@@ -63,15 +69,18 @@
           "citations": [
             {
               "nct_id": "NCT03371979",
-              "excerpt": "The main purpose of this Phase 1/2 study is to determine the safety and efficacy of pegzilarginase in combination with pembrolizumab in patients with ED-SCLC who have relapsed or progressive disease o"
+              "excerpt": "2017-12-21",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT02999477",
-              "excerpt": "This research study is exploring chemotherapy in combination with immunotherapy (a therapy that uses the body's own immune system to control cancer) as a possible treatment for hormone receptor positi"
+              "excerpt": "2017-02-23",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT03358472",
-              "excerpt": "The purpose of this study was to evaluate the efficacy and safety of pembrolizumab plus epacadostat, pembrolizumab monotherapy, and the EXTREME regimen (cetuximab + cisplatin or carboplatin + 5-fluoro"
+              "excerpt": "2017-12-01",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             }
           ]
         },
@@ -81,15 +90,18 @@
           "citations": [
             {
               "nct_id": "NCT03428802",
-              "excerpt": "This phase II trial studies how well pembrolizumab works in treating participants with cancer that has spread to other places in the body, has come back or has spread to nearby tissues or lymph nodes."
+              "excerpt": "2018-03-08",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT03193931",
-              "excerpt": "The study is designed as an open-label, randomized, prospective, multicenter, phase II study comparing pembrolizumab with methotrexate in elderly, frail or cisplatin-ineligible patients with squamous "
+              "excerpt": "2018-02-02",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT03721679",
-              "excerpt": "This is an open labeled, non-randomized adaptive pilot study. The study interventions involved in this study are:\n\nPoly-ICLC (Polyinosinic-Polycytidylic acid stabilized with polylysine and carboxymeth"
+              "excerpt": "2018-09-25",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             }
           ]
         },
@@ -99,15 +111,18 @@
           "citations": [
             {
               "nct_id": "NCT03166254",
-              "excerpt": "Both metastatic squamous non-small cell lung cancer (NSCLC) and extensive stage small cell lung cancer (SCLC) are incurable with current therapies, but due to mutations induced by cigarette smoke, typ"
+              "excerpt": "2019-04-30",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT04016116",
-              "excerpt": "Pembrolizumab will have significant clinical activity in patients with Intermediate and high risk MF, advanced PV who have been resistant, failed or are intolerant to JAK2 inhibitor therapy and the ac"
+              "excerpt": "2019-12",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT04091932",
-              "excerpt": "PD-1 inhibitor （Pembrolizumab, 2mg/kg weight, once per 4 weeks and 3 times of medication usage）treatment on AIDS patients with progressive multifocal leukoencephalopathy."
+              "excerpt": "2019-08-20",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             }
           ]
         },
@@ -117,15 +132,18 @@
           "citations": [
             {
               "nct_id": "NCT04094909",
-              "excerpt": "The aim of this study was to investigate that efficacy and safety of rh-endostatin（Endostar）combined with platinum-based doublet chemotherapy and Pembrolizumab as first line therapy in patients with a"
+              "excerpt": "2020-02-06",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT04114136",
-              "excerpt": "Patients with histologically or cytologically confirmed advanced melanoma, renal cell carcinoma, NSCLC, HCC (Child Pugh Class A only), MSI-High solid tumors, Urothelial Cancer, GE junction/Gastric Ade"
+              "excerpt": "2020-09-14",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT04485013",
-              "excerpt": "TTX-080-001 is a Phase 1, open label, dose escalation and dose expansion clinical study to determine the safety, tolerability, and recommended Phase 2 dose of TTX-080 monotherapy (HLA-G inhibitor) and"
+              "excerpt": "2020-07-14",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             }
           ]
         },
@@ -135,15 +153,18 @@
           "citations": [
             {
               "nct_id": "NCT04869137",
-              "excerpt": "This is a single arm trial of participants with Merkel cell carcinoma receiving a combination of lenvatinib plus pembrolizumab."
+              "excerpt": "2021-05-28",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT04287829",
-              "excerpt": "There is no standard second line treatment in malignant pleural mesothelioma (MPM). Pembrolizumab has shown to be active in in small phase II studies in MPM. Its activity however, is limited, with a r"
+              "excerpt": "2021-03-01",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT04698681",
-              "excerpt": "This is a multicenter screening protocol designed to identify patients with NSCLC who have tumor mutations in the KEAP1 or NRF2/NFE2L2 genes in order to determine potential eligibility for a biomarker"
+              "excerpt": "2021-01-19",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             }
           ]
         },
@@ -153,15 +174,18 @@
           "citations": [
             {
               "nct_id": "NCT05155254",
-              "excerpt": "Phase 3, multicenter, international, open-label, randomized, 2-arm trial investigating the safety and efficacy of IO102-IO103 in combination with pembrolizumab as first-line treatment for patients wit"
+              "excerpt": "2022-05-17",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT05687266",
-              "excerpt": "This is a Phase III, randomized, open-label, multicenter, global study to compare the efficacy and safety of Datopotamab Deruxtecan (Dato-DXd) in combination with durvalumab and carboplatin compared w"
+              "excerpt": "2022-12-29",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT05284539",
-              "excerpt": "The investigators want to evaluate the Efficay and Safety of Platinum-based Chemotherapy with or without immune checkpoint inhibitors for EGFR/ALK/ROS1 Positive NSCLC who Failed from First-Line Standa"
+              "excerpt": "2022-04-01",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             }
           ]
         },
@@ -171,15 +195,18 @@
           "citations": [
             {
               "nct_id": "NCT06320353",
-              "excerpt": "The goal of this double-blind, randomized study is to establish the equivalence of the efficacy, safety and immunogenicity of the drugs RPH-075 (international nonproprietary name (INN) is pembrolizuma"
+              "excerpt": "2023-09-27",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT05576077",
-              "excerpt": "A multicenter trial to investigate TBio-4101, an autologous, neoantigen-selected, tumor-reactive TIL product, in patients with advanced solid malignancies."
+              "excerpt": "2023-01-17",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT05929768",
-              "excerpt": "This phase III trial compares the effects of shorter chemotherapy (chemo)-immunotherapy without anthracyclines to usual chemo-immunotherapy for the treatment of early-stage triple negative breast canc"
+              "excerpt": "2023-09-15",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             }
           ]
         },
@@ -189,15 +216,18 @@
           "citations": [
             {
               "nct_id": "NCT06484153",
-              "excerpt": "The purpose of this study is to evaluate the efficacy and safety of fruquintinib and pirfenidone in combination with anti-PD-1 antibody in patients with standard treatment failure of advanced or metas"
+              "excerpt": "2024-07-22",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT06312137",
-              "excerpt": "This study will assess if adding sacituzumab tirumotecan with pembrolizumab after surgery is effective in treating NSCLC for participants not achieving pathological complete response. The primary hypo"
+              "excerpt": "2024-04-03",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT06374602",
-              "excerpt": "This pilot phase 2 study evaluate the effectiveness and safety of pembrolizumab and lenvatinib in patients with anaplastic thyroid cancer. Patients with anaplastic thyroid cancer who are treatment-nai"
+              "excerpt": "2024-03-25",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             }
           ]
         },
@@ -207,15 +237,18 @@
           "citations": [
             {
               "nct_id": "NCT06697301",
-              "excerpt": "The study is for patients with advanced melanoma who are eligible for standard therapy with Pembrolizumab."
+              "excerpt": "2025-05-22",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT07129772",
-              "excerpt": "Nasopharyngeal carcinoma (NPC) is an endemic malignancy in Southern China and southeast Asia. Despite intensive radical therapy, between 15% and 30% of NPC patients develop relapse. Recent phase III r"
+              "excerpt": "2025-11-01",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT06599619",
-              "excerpt": "This study will examine the impact of anti-programmed cell death 1 (PD1) therapy given in the approved adjuvant therapeutic regimens upon the morphologic, histopathologic, molecular and immunologic as"
+              "excerpt": "2025-02-20",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             }
           ]
         },
@@ -225,15 +258,18 @@
           "citations": [
             {
               "nct_id": "NCT07277777",
-              "excerpt": "This prospective randomized trial evaluates the efficacy and safety of combining 125I seed interstitial brachytherapy with immune checkpoint inhibitor therapy in patients with primary, recurrent, or m"
+              "excerpt": "2026-01",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT07633353",
-              "excerpt": "The combination of Enfortumab Vedotin and Pembrolizumab has substantially improved outcomes for patients with advanced urothelial carcinoma and has emerged as a new standard of care in the first-line "
+              "excerpt": "2026-07-01",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT07632235",
-              "excerpt": "This study aims to evaluate whether adding celecoxib to standard therapy can improve clinical outcomes in patients with advanced intrahepatic cholangiocarcinoma. The current standard treatment typical"
+              "excerpt": "2026-07-01",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             }
           ]
         },
@@ -243,11 +279,13 @@
           "citations": [
             {
               "nct_id": "NCT07037004",
-              "excerpt": "This phase II trial compares the effect of adding a Live Biotherapeutic Product called CBM588 to pembrolizumab versus pembrolizumab alone in preventing return of disease (recurrence) after surgery for"
+              "excerpt": "2027-01-01",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             },
             {
               "nct_id": "NCT04266730",
-              "excerpt": "This is a single center, open-label phase I clinical trial designed to determine the safety of personalized and adjusted neoantigen peptide vaccine (PANDA-VAC) administered concurrently with pembroliz"
+              "excerpt": "2027-05-20",
+              "source_field": "protocolSection.statusModule.startDateStruct.date"
             }
           ]
         }
@@ -266,6 +304,7 @@
       "time_granularity": "year",
       "truncated": false,
       "count_verified": true,
+      "counts_exact": true,
       "count_server": null,
       "query_interpretation": "Grouped 2,819 fetched studies by 'start_year'",
       "warnings": []

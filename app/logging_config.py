@@ -12,12 +12,32 @@ module is only required for the running app.
 from __future__ import annotations
 
 import logging
+import sys
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
 import structlog
 
 from app.config import get_settings
+
+
+def _force_utf8_streams() -> None:
+    """
+    Make stdout/stderr UTF-8.
+
+    structlog prints to stdout, and prompts/labels contain non-ASCII characters
+    (e.g. "≤", the "–" en dash in enrollment buckets). On Windows the default
+    console encoding is cp1252, which raises UnicodeEncodeError on those — which
+    would otherwise surface as a request failure. Reconfiguring is a no-op on
+    platforms/streams that are already UTF-8.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure:
+            try:
+                reconfigure(encoding="utf-8")
+            except Exception:
+                pass
 
 
 def _make_timestamper(tz_name: str):
@@ -33,6 +53,7 @@ def _make_timestamper(tz_name: str):
 
 def configure_logging() -> None:
     settings = get_settings()
+    _force_utf8_streams()
     structlog.configure(
         processors=[
             structlog.processors.add_log_level,

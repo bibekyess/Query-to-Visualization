@@ -6,7 +6,8 @@ from collections import defaultdict
 
 from app.clinicaltrials import extractors as ct
 from app.config import get_settings
-from app.tools.store import AGG_RESULTS, DATASETS
+from app.tools import counts as exact
+from app.tools.store import AGG_RESULTS, DATASETS, DATASET_META
 
 # Human-readable labels for the API's ALL_CAPS phase enum values.
 _PHASE_DISPLAY: dict[str, str] = {
@@ -32,6 +33,55 @@ def _enrollment_bucket(count: int | None) -> str:
     if count < 5_000:
         return "1,000–4,999"
     return "5,000+"
+
+
+# JSON path each citation excerpt is read from, per group_by — so a citation
+# actually substantiates the bucket it sits under (not a generic briefSummary).
+_SOURCE_FIELD: dict[str, str] = {
+    "phase": "protocolSection.designModule.phases",
+    "status": "protocolSection.statusModule.overallStatus",
+    "start_year": "protocolSection.statusModule.startDateStruct.date",
+    "start_month": "protocolSection.statusModule.startDateStruct.date",
+    "completion_year": "protocolSection.statusModule.completionDateStruct.date",
+    "sponsor_name": "protocolSection.sponsorCollaboratorsModule.leadSponsor.name",
+    "sponsor_class": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class",
+    "country": "protocolSection.contactsLocationsModule.locations[].country",
+    "intervention_type": "protocolSection.armsInterventionsModule.interventions[].type",
+    "study_type": "protocolSection.designModule.studyType",
+    "condition": "protocolSection.conditionsModule.conditions[]",
+    "enrollment_bucket": "protocolSection.designModule.enrollmentInfo.count",
+}
+
+
+def _citation(study: dict, group_by: str, group: str) -> dict:
+    """
+    Build one citation that substantiates *this study's membership in `group`*.
+
+    For multi-valued / bucketed fields the excerpt is the specific value that put
+    the study in the bucket (the country, the phase, the enrollment count). For
+    fields without a tidy single value we fall back to the briefSummary text.
+    """
+    nct_id = ct.extract_nct_id(study)
+    # `group` already is the bucket value for these single-membership fields.
+    if group_by in ("country", "intervention_type", "condition", "sponsor_name",
+                     "status", "sponsor_class", "study_type"):
+        excerpt = group
+    elif group_by == "phase":
+        excerpt = ", ".join(ct.extract_phases(study)) or "NA"
+    elif group_by in ("start_year", "start_month"):
+        excerpt = ct.extract_start_date(study) or ""
+    elif group_by == "completion_year":
+        excerpt = ct.extract_completion_date(study) or ""
+    elif group_by == "enrollment_bucket":
+        n = ct.extract_enrollment(study)
+        excerpt = f"Enrollment: {n}" if n is not None else "Enrollment: unknown"
+    else:
+        excerpt = ct.extract_brief_summary(study)[:200]
+    return {
+        "nct_id": nct_id,
+        "excerpt": excerpt,
+        "source_field": _SOURCE_FIELD.get(group_by, "protocolSection.descriptionModule.briefSummary"),
+    }
 
 
 def _study_groups(study: dict, group_by: str) -> list[str]:
@@ -97,24 +147,39 @@ def aggregate(
         return {"error": f"Dataset {dataset_id!r} not found. Call search_trials first."}
 
     studies = DATASETS[dataset_id]
-    counts: dict[str, int] = defaultdict(int)
-    # Collect citations as we count, so we don't need a second pass over the studies later.
-    citations_map: dict[str, list[dict]] = defaultdict(list)
+    meta = DATASET_META.get(dataset_id, {})
+    total_count: int = meta.get("total_count", len(studies))
+    fetched_count: int = meta.get("fetched_count", len(studies))
+    truncated = total_count > fetched_count
 
+    # Always tally the fetched sample: it gives per-bucket citations, and serves as
+    # the count source whenever exact server-side counts aren't available.
+    sample_counts: dict[str, int] = defaultdict(int)
+    citations_map: dict[str, list[dict]] = defaultdict(list)
     for study in studies:
-        nct_id = ct.extract_nct_id(study)
-        excerpt = ct.extract_brief_summary(study)[:200]
         for group in _study_groups(study, group_by):
-            counts[group] += 1
+            sample_counts[group] += 1
             if len(citations_map[group]) < get_settings().citations_per_group:
-                citations_map[group].append({"nct_id": nct_id, "excerpt": excerpt})
+                citations_map[group].append(_citation(study, group_by, group))
+
+    # Decide where the bar values come from:
+    #   - not truncated        → the sample IS the full set, so its counts are exact.
+    #   - truncated + countable → ask the server for exact per-bucket counts.
+    #   - truncated + unbounded → keep sample counts, flag them as approximate.
+    counts: dict[str, int] = sample_counts
+    counts_exact = not truncated
+    if truncated:
+        server_counts = exact.exact_counts(group_by, meta.get("query_params", {}), total_count)
+        if server_counts is not None:
+            counts = server_counts
+            counts_exact = True
 
     sorted_groups = sorted(counts.items(), key=lambda x: x[1], reverse=True)[:top_n]
 
     # Store the full bucketed data (including counts) server-side, keyed by result_id.
     # The LLM only receives the label list; numbers never enter the LLM context.
     data = [
-        {group_by: label, "count": count, "citations": citations_map[label]}
+        {group_by: label, "count": count, "citations": citations_map.get(label, [])}
         for label, count in sorted_groups
     ]
 
@@ -123,6 +188,7 @@ def aggregate(
         "data": data,
         "group_by": group_by,
         "dataset_id": dataset_id,
+        "counts_exact": counts_exact,
     }
 
     return {

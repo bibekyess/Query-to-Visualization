@@ -11,7 +11,7 @@
   "response": {
     "visualization": {
       "type": "bar_chart",
-      "title": "Top 20 Countries with Most Recruiting Breast Cancer Trials",
+      "title": "Countries with Most Recruiting Breast Cancer Trials",
       "encoding": {
         "x": {
           "field": "country"
@@ -27,15 +27,18 @@
           "citations": [
             {
               "nct_id": "NCT06334354",
-              "excerpt": "The purpose of this study is to look at how differences in cognitive (mental) function develop over time in breast cancer survivors compared to volunteers without a history of cancer (healthy voluntee"
+              "excerpt": "United States",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT05929768",
-              "excerpt": "This phase III trial compares the effects of shorter chemotherapy (chemo)-immunotherapy without anthracyclines to usual chemo-immunotherapy for the treatment of early-stage triple negative breast canc"
+              "excerpt": "United States",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07447050",
-              "excerpt": "This is a phase II single-arm, Phase 2a, randomized, double-blinded, placebo-controlled pilot clinical trial determining efficacy of riluzole in preventing cognitive dysfunction in subjects with cance"
+              "excerpt": "United States",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -45,15 +48,18 @@
           "citations": [
             {
               "nct_id": "NCT06331169",
-              "excerpt": "This study will evaluate the safety, tolerability and efficacy of anlotinib and trastuzumab deruxtecan in human epidermal growth factor receptor 2 (HER2)-low unresectable and/or metastatic breast canc"
+              "excerpt": "China",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT06001086",
-              "excerpt": "Evaluate the efficacy and safety of Disitamb Vedotin combined with pyrotinib in HER2 positive early breast cancer"
+              "excerpt": "China",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "China",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -63,15 +69,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "Italy",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT06114589",
-              "excerpt": "Breast radiation treatment is burdened by acute and chronic toxicities, in most cases mild. However, considering the excellent life expectancy of patients with breast cancer, maintaining a low toxicit"
+              "excerpt": "Italy",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07257679",
-              "excerpt": "This is a single-blind, parallel-group Randomized Controlled Trial (RCT) comparing the efficacy of a specialized manual technique, Gentle Touch (GT), versus a control intervention, both added to the u"
+              "excerpt": "Italy",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -81,15 +90,18 @@
           "citations": [
             {
               "nct_id": "NCT07165756",
-              "excerpt": "Since late 2019, the French association \"MON PARCOURS DE VIE\" has developed books donated by caregivers at cancer centers in France. These documents are available online: https://www.monparcoursdevie."
+              "excerpt": "France",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "France",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT05800275",
-              "excerpt": "The goal of this clinical trial is to evaluate the efficacy of tucatinib and capecitabine in combination with intrathecal trastuzumab on overall survival rate at 12 months in HER2-positive metastatic "
+              "excerpt": "France",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -99,15 +111,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "Spain",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT05683418",
-              "excerpt": "The goal of this clinical trial is to evaluate the safety and efficacy of TOS-358 in women with HR+ HER2- metastatic breast cancer whose tumors have a mutation in PIK3CA and who meet all other study e"
+              "excerpt": "Spain",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT05059444",
-              "excerpt": "The purpose of ORACLE is to demonstrate the ability of a novel ctDNA assay developed by Guardant Health to detect recurrence in individuals treated for early-stage solid tumors. It is necessary that c"
+              "excerpt": "Spain",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -117,15 +132,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "Canada",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT06633601",
-              "excerpt": "The objective of this study is to demonstrate the feasibility of novel Magnetic Resonance Imaging (MRI)-guided ultrasound stimulated microbubble treatment to enhance radiation effects in humans receiv"
+              "excerpt": "Canada",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07174336",
-              "excerpt": "The purpose of the study is to assess the efficacy and safety of the addition of Tersolisib (LY4064809/STX-478) to other anti-cancer drugs as first treatment for advanced hormone receptor-positive (HR"
+              "excerpt": "Canada",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -135,15 +153,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "South Korea",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07174336",
-              "excerpt": "The purpose of the study is to assess the efficacy and safety of the addition of Tersolisib (LY4064809/STX-478) to other anti-cancer drugs as first treatment for advanced hormone receptor-positive (HR"
+              "excerpt": "South Korea",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07297927",
-              "excerpt": "The goal of this observational study is to learn how the lymphatic system changes before and after radiotherapy in female patients with breast cancer. The study aims to understand early lymphatic chan"
+              "excerpt": "South Korea",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -153,15 +174,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "Germany",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT05059444",
-              "excerpt": "The purpose of ORACLE is to demonstrate the ability of a novel ctDNA assay developed by Guardant Health to detect recurrence in individuals treated for early-stage solid tumors. It is necessary that c"
+              "excerpt": "Germany",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07174336",
-              "excerpt": "The purpose of the study is to assess the efficacy and safety of the addition of Tersolisib (LY4064809/STX-478) to other anti-cancer drugs as first treatment for advanced hormone receptor-positive (HR"
+              "excerpt": "Germany",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -171,15 +195,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "United Kingdom",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT04969835",
-              "excerpt": "This is a first-in-human (FIH), Phase 1 open-label, multicentre dose escalation study investigating AVA6000 monotherapy administered intravenously in patients with locally advanced (unresectable) or m"
+              "excerpt": "United Kingdom",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07174336",
-              "excerpt": "The purpose of the study is to assess the efficacy and safety of the addition of Tersolisib (LY4064809/STX-478) to other anti-cancer drugs as first treatment for advanced hormone receptor-positive (HR"
+              "excerpt": "United Kingdom",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -189,15 +216,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "Australia",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT01793168",
-              "excerpt": "CoRDS, or the Coordination of Rare Diseases at Sanford, is based at Sanford Research in Sioux Falls, South Dakota. It provides researchers with a centralized, international patient registry for all ra"
+              "excerpt": "Australia",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07222267",
-              "excerpt": "The purpose of this study is to evaluate the safety, tolerability, pharmacokinetics (PK), pharmacodynamics, and preliminary antitumor activity of BG-75202 (KAT6A/B inhibitor) alone and in combination "
+              "excerpt": "Australia",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -207,15 +237,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "Belgium",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT06345534",
-              "excerpt": "Randomized comparison between the FAST-FORWARD schedule and the HAI5 schedule for breast cancer radiotherapy in 5 fractions."
+              "excerpt": "Belgium",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT05601037",
-              "excerpt": "Lymphedema is defined as a chronic condition, caused by lymphostasis. A major part in the Western world consists of iatrogenic lymphedema caused by surgery to the lymph nodes of the axilla or groin. P"
+              "excerpt": "Belgium",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -225,15 +258,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "Netherlands",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT06266312",
-              "excerpt": "The primary objective of this study is to investigate the feasibility of a multimodal prehabilitation programme consisting of MIET during neoadjuvant intravenous chemotherapy infusion, HITT and streng"
+              "excerpt": "Netherlands",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT06640881",
-              "excerpt": "Over the past decades, interest in second breast-conserving therapy (BCT) has increased due to, among others, advancements in radiotherapy techniques. Preoperative partial breast irradiation (PBI) is "
+              "excerpt": "Netherlands",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -243,15 +279,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "Taiwan",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07174336",
-              "excerpt": "The purpose of the study is to assess the efficacy and safety of the addition of Tersolisib (LY4064809/STX-478) to other anti-cancer drugs as first treatment for advanced hormone receptor-positive (HR"
+              "excerpt": "Taiwan",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07214662",
-              "excerpt": "This is a first-in-human, Phase Ia/Ib, dose-escalation and expansion study evaluating the safety, pharmacokinetics, and activity of GDC-0587 (cyclin-dependent kinase-4 \\[CDK4\\] inhibitor) as a monothe"
+              "excerpt": "Taiwan",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -261,15 +300,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "Japan",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07174336",
-              "excerpt": "The purpose of the study is to assess the efficacy and safety of the addition of Tersolisib (LY4064809/STX-478) to other anti-cancer drugs as first treatment for advanced hormone receptor-positive (HR"
+              "excerpt": "Japan",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07360314",
-              "excerpt": "The purpose of this first-in-human (FIH) study is to evaluate the safety, tolerability, Pharmacokinetics (PK), and preliminary clinical activity of M7437 in participants with locally advanced or metas"
+              "excerpt": "Japan",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -279,15 +321,18 @@
           "citations": [
             {
               "nct_id": "NCT07367269",
-              "excerpt": "Breast cancer patients receiving chemotherapy often experience psychological distress, anxiety, and discomfort during treatment. Non-drug supportive methods may help improve patients' well-being durin"
+              "excerpt": "Turkey (Türkiye)",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "Turkey (Türkiye)",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT06116812",
-              "excerpt": "Breast cancer is defined as the most common type of cancer that causes death among women (Siegel et al. 2019). It constitutes 24% of cancers and 15% of cancer-related deaths in women (T.R. Ministry of"
+              "excerpt": "Turkey (Türkiye)",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -297,15 +342,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "Brazil",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT05776147",
-              "excerpt": "The radiotherapy scheme with extreme hypofractionation has gained space in clinical practice and, therefore, it is necessary to analyze the Brazilian national experience in selected patients with brea"
+              "excerpt": "Brazil",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07174336",
-              "excerpt": "The purpose of the study is to assess the efficacy and safety of the addition of Tersolisib (LY4064809/STX-478) to other anti-cancer drugs as first treatment for advanced hormone receptor-positive (HR"
+              "excerpt": "Brazil",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -315,15 +363,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "Sweden",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT06052345",
-              "excerpt": "This is a single center prospective observational cohort study that aims to:\n\n* examine and identify possible risk and susceptibility factors for the incidence and progression of chemotherapy-induced "
+              "excerpt": "Sweden",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT06463600",
-              "excerpt": "The feasibility of the use of magnetic clips for tumour localisation before preoperative chemotherapy in combination with superparamagnetic iron oxide nanoparticles (SPIO) as tracer for sentinel lymph"
+              "excerpt": "Sweden",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -333,15 +384,18 @@
           "citations": [
             {
               "nct_id": "NCT07546695",
-              "excerpt": "In this multicenter retrospective cohort study the aim is to determine the safety of omission of axillary lymph node dissection in patients with TNBC and HER2+ tumors with residual macrometastases (in"
+              "excerpt": "Switzerland",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT03463954",
-              "excerpt": "Prior to this confirmatory pivotal study, the multicenter Br-002 feasibility study was completed. 98% of tumors less than or equal to 15mm were completely ablated in one procedure.This study will eval"
+              "excerpt": "Switzerland",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT06492616",
-              "excerpt": "The primary goal of this study is to evaluate the effectiveness of elacestrant versus standard endocrine therapy in participants with node-positive, Estrogen Receptor-positive (ER+), Human Epidermal G"
+              "excerpt": "Switzerland",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -351,15 +405,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "Poland",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT06304857",
-              "excerpt": "The purpose of this study is to evaluate the effect of dapagliflozin on the incidence of cancer therapeutics-related cardiac dysfunction in patients with breast cancer receiving anthracycline treatmen"
+              "excerpt": "Poland",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT06492616",
-              "excerpt": "The primary goal of this study is to evaluate the effectiveness of elacestrant versus standard endocrine therapy in participants with node-positive, Estrogen Receptor-positive (ER+), Human Epidermal G"
+              "excerpt": "Poland",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         },
@@ -369,15 +426,18 @@
           "citations": [
             {
               "nct_id": "NCT07062965",
-              "excerpt": "The purpose of this study is to learn about the safety and effects of the study medicine PF-07248144 when given along with fulvestrant for the possible treatment of HR-positive, HER2-negative advanced"
+              "excerpt": "Israel",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT04641247",
-              "excerpt": "This is a global extension study to provide continued access to niraparib and further characterize the long-term safety of niraparib treatment in participants who are currently receiving treatment wit"
+              "excerpt": "Israel",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             },
             {
               "nct_id": "NCT07646171",
-              "excerpt": "This phase II, open-label, single-arm, study investigates the clinical benefit of everolimus combined with endocrine therapy (ET) in hormone receptor-positive (HR+), metastatic breast cancer (MBC) pat"
+              "excerpt": "Israel",
+              "source_field": "protocolSection.contactsLocationsModule.locations[].country"
             }
           ]
         }
@@ -396,6 +456,7 @@
       "time_granularity": null,
       "truncated": false,
       "count_verified": true,
+      "counts_exact": true,
       "count_server": null,
       "query_interpretation": "Grouped 2,475 fetched studies by 'country'",
       "warnings": []

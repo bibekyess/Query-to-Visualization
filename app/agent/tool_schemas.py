@@ -166,11 +166,12 @@ TOOLS = [
                     },
                     "viz_hint": {
                         "type": "string",
-                        "enum": [
-                            "bar_chart", "time_series", "histogram",
-                            "scatter", "network_graph", "grouped_bar",
-                        ],
-                        "description": "Optional viz type override",
+                        "enum": ["bar_chart", "time_series", "histogram"],
+                        "description": (
+                            "Optional chart-type override for an aggregate result. "
+                            "Time fields auto-select time_series and enrollment auto-selects "
+                            "histogram regardless of this hint; networks are set automatically."
+                        ),
                     },
                 },
                 "required": ["result_id", "title", "encoding"],

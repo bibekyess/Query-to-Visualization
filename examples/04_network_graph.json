@@ -10,7 +10,7 @@
   "response": {
     "visualization": {
       "type": "network_graph",
-      "title": "Network of Conditions Co-occurring in Lung Cancer Trials",
+      "title": "Network of Co-occurring Conditions in Lung Cancer Trials",
       "encoding": {
         "nodes": {
           "field": "condition",
@@ -23,880 +23,880 @@
       "data": null,
       "nodes": [
         {
-          "id": "Lung Cancer",
-          "label": "Lung Cancer",
-          "weight": 977
-        },
-        {
-          "id": "Non-small Cell Lung Cancer",
+          "id": "non small cell lung cancer",
           "label": "Non-small Cell Lung Cancer",
-          "weight": 384
+          "weight": 1097
         },
         {
-          "id": "Non Small Cell Lung Cancer",
-          "label": "Non Small Cell Lung Cancer",
-          "weight": 331
+          "id": "lung cancer",
+          "label": "Lung Cancer",
+          "weight": 979
         },
         {
-          "id": "Non-Small Cell Lung Cancer",
-          "label": "Non-Small Cell Lung Cancer",
-          "weight": 320
-        },
-        {
-          "id": "Carcinoma, Non-Small-Cell Lung",
+          "id": "carcinoma non small cell lung",
           "label": "Carcinoma, Non-Small-Cell Lung",
-          "weight": 244
+          "weight": 290
         },
         {
-          "id": "Breast Cancer",
+          "id": "breast cancer",
           "label": "Breast Cancer",
           "weight": 173
         },
         {
-          "id": "Cancer",
-          "label": "Cancer",
-          "weight": 143
-        },
-        {
-          "id": "Small Cell Lung Cancer",
+          "id": "small cell lung cancer",
           "label": "Small Cell Lung Cancer",
-          "weight": 126
+          "weight": 163
         },
         {
-          "id": "Colorectal Cancer",
-          "label": "Colorectal Cancer",
-          "weight": 122
+          "id": "cancer",
+          "label": "Cancer",
+          "weight": 144
         },
         {
-          "id": "NSCLC",
+          "id": "nsclc",
           "label": "NSCLC",
-          "weight": 117
+          "weight": 124
         },
         {
-          "id": "Lung Neoplasms",
+          "id": "colorectal cancer",
+          "label": "Colorectal Cancer",
+          "weight": 123
+        },
+        {
+          "id": "lung neoplasms",
           "label": "Lung Neoplasms",
           "weight": 117
         },
         {
-          "id": "Melanoma",
+          "id": "melanoma",
           "label": "Melanoma",
-          "weight": 82
+          "weight": 83
         },
         {
-          "id": "Ovarian Cancer",
+          "id": "non small cell lung cancer nsclc",
+          "label": "Non-small Cell Lung Cancer (NSCLC)",
+          "weight": 77
+        },
+        {
+          "id": "ovarian cancer",
           "label": "Ovarian Cancer",
-          "weight": 71
+          "weight": 72
         },
         {
-          "id": "Head and Neck Cancer",
+          "id": "head and neck cancer",
           "label": "Head and Neck Cancer",
           "weight": 67
         },
         {
-          "id": "Prostate Cancer",
+          "id": "prostate cancer",
           "label": "Prostate Cancer",
           "weight": 65
         },
         {
-          "id": "Solid Tumor",
+          "id": "solid tumor",
           "label": "Solid Tumor",
           "weight": 58
         },
         {
-          "id": "Neoplasms",
+          "id": "extensive stage small cell lung cancer",
+          "label": "Extensive Stage Small Cell Lung Cancer",
+          "weight": 54
+        },
+        {
+          "id": "neoplasms",
           "label": "Neoplasms",
+          "weight": 50
+        },
+        {
+          "id": "non squamous non small cell lung cancer",
+          "label": "Non-Squamous Non-Small Cell Lung Cancer",
           "weight": 49
         },
         {
-          "id": "Gastric Cancer",
+          "id": "non small cell lung carcinoma",
+          "label": "Non-Small-Cell Lung Carcinoma",
+          "weight": 49
+        },
+        {
+          "id": "gastric cancer",
           "label": "Gastric Cancer",
           "weight": 48
         },
         {
-          "id": "Esophageal Cancer",
+          "id": "esophageal cancer",
           "label": "Esophageal Cancer",
           "weight": 47
         },
         {
-          "id": "Pancreatic Cancer",
+          "id": "non small cell lung cancer metastatic",
+          "label": "Non-small Cell Lung Cancer Metastatic",
+          "weight": 46
+        },
+        {
+          "id": "pancreatic cancer",
           "label": "Pancreatic Cancer",
           "weight": 46
         },
         {
-          "id": "Advanced Solid Tumor",
+          "id": "advanced non small cell lung cancer",
+          "label": "Advanced Non-small Cell Lung Cancer",
+          "weight": 43
+        },
+        {
+          "id": "advanced solid tumor",
           "label": "Advanced Solid Tumor",
           "weight": 42
-        },
-        {
-          "id": "Lung Adenocarcinoma",
-          "label": "Lung Adenocarcinoma",
-          "weight": 39
-        },
-        {
-          "id": "Metastatic Cancer",
-          "label": "Metastatic Cancer",
-          "weight": 39
-        },
-        {
-          "id": "Lung Cancer (NSCLC)",
-          "label": "Lung Cancer (NSCLC)",
-          "weight": 36
-        },
-        {
-          "id": "NSCLC Stage IV",
-          "label": "NSCLC Stage IV",
-          "weight": 35
         }
       ],
       "edges": [
         {
-          "source": "Breast Cancer",
-          "target": "Lung Cancer",
+          "source": "breast cancer",
+          "target": "lung cancer",
           "weight": 93
         },
         {
-          "source": "Breast Cancer",
-          "target": "Colorectal Cancer",
+          "source": "breast cancer",
+          "target": "colorectal cancer",
           "weight": 47
         },
         {
-          "source": "Colorectal Cancer",
-          "target": "Lung Cancer",
+          "source": "melanoma",
+          "target": "non small cell lung cancer",
+          "weight": 41
+        },
+        {
+          "source": "colorectal cancer",
+          "target": "non small cell lung cancer",
+          "weight": 40
+        },
+        {
+          "source": "colorectal cancer",
+          "target": "lung cancer",
           "weight": 39
         },
         {
-          "source": "Head and Neck Cancer",
-          "target": "Lung Cancer",
+          "source": "head and neck cancer",
+          "target": "lung cancer",
           "weight": 38
         },
         {
-          "source": "Breast Cancer",
-          "target": "Prostate Cancer",
+          "source": "breast cancer",
+          "target": "prostate cancer",
           "weight": 38
         },
         {
-          "source": "Lung Cancer",
-          "target": "Prostate Cancer",
+          "source": "lung cancer",
+          "target": "prostate cancer",
           "weight": 37
         },
         {
-          "source": "Breast Cancer",
-          "target": "Ovarian Cancer",
+          "source": "breast cancer",
+          "target": "non small cell lung cancer",
           "weight": 35
         },
         {
-          "source": "Lung Cancer",
-          "target": "Ovarian Cancer",
-          "weight": 28
+          "source": "breast cancer",
+          "target": "ovarian cancer",
+          "weight": 35
         },
         {
-          "source": "Esophageal Cancer",
-          "target": "Lung Cancer",
+          "source": "lung cancer",
+          "target": "non small cell lung cancer",
+          "weight": 31
+        },
+        {
+          "source": "lung cancer",
+          "target": "ovarian cancer",
+          "weight": 29
+        },
+        {
+          "source": "non small cell lung cancer",
+          "target": "small cell lung cancer",
+          "weight": 27
+        },
+        {
+          "source": "esophageal cancer",
+          "target": "lung cancer",
           "weight": 23
         },
         {
-          "source": "Breast Cancer",
-          "target": "Gastric Cancer",
+          "source": "non small cell lung cancer",
+          "target": "solid tumor",
+          "weight": 23
+        },
+        {
+          "source": "breast cancer",
+          "target": "gastric cancer",
           "weight": 21
         },
         {
-          "source": "Colorectal Cancer",
-          "target": "Non-Small Cell Lung Cancer",
+          "source": "non small cell lung cancer",
+          "target": "nsclc",
+          "weight": 19
+        },
+        {
+          "source": "lung cancer",
+          "target": "melanoma",
           "weight": 18
         },
         {
-          "source": "Breast Cancer",
-          "target": "Head and Neck Cancer",
+          "source": "breast cancer",
+          "target": "head and neck cancer",
           "weight": 17
         },
         {
-          "source": "Lung Cancer",
-          "target": "Melanoma",
+          "source": "gastric cancer",
+          "target": "lung cancer",
           "weight": 17
         },
         {
-          "source": "Melanoma",
-          "target": "Non Small Cell Lung Cancer",
+          "source": "cancer",
+          "target": "lung cancer",
           "weight": 17
         },
         {
-          "source": "Gastric Cancer",
-          "target": "Lung Cancer",
-          "weight": 17
-        },
-        {
-          "source": "Lung Cancer",
-          "target": "Non Small Cell Lung Cancer",
+          "source": "non small cell lung cancer",
+          "target": "pancreatic cancer",
           "weight": 16
         },
         {
-          "source": "Cancer",
-          "target": "Lung Cancer",
-          "weight": 16
-        },
-        {
-          "source": "Colorectal Cancer",
-          "target": "Prostate Cancer",
+          "source": "carcinoma non small cell lung",
+          "target": "non small cell lung cancer",
           "weight": 15
         },
         {
-          "source": "Breast Cancer",
-          "target": "Pancreatic Cancer",
+          "source": "colorectal cancer",
+          "target": "prostate cancer",
           "weight": 15
         },
         {
-          "source": "Breast Cancer",
-          "target": "Melanoma",
+          "source": "breast cancer",
+          "target": "pancreatic cancer",
+          "weight": 15
+        },
+        {
+          "source": "advanced solid tumor",
+          "target": "non small cell lung cancer",
+          "weight": 15
+        },
+        {
+          "source": "breast cancer",
+          "target": "melanoma",
           "weight": 14
         },
         {
-          "source": "Colorectal Cancer",
-          "target": "Gastric Cancer",
+          "source": "colorectal cancer",
+          "target": "gastric cancer",
           "weight": 14
         },
         {
-          "source": "Lung Cancer",
-          "target": "Pancreatic Cancer",
+          "source": "lung cancer",
+          "target": "pancreatic cancer",
           "weight": 14
         },
         {
-          "source": "Esophageal Cancer",
-          "target": "Head and Neck Cancer",
+          "source": "gastric cancer",
+          "target": "non small cell lung cancer",
           "weight": 13
         },
         {
-          "source": "Colorectal Cancer",
-          "target": "Ovarian Cancer",
+          "source": "esophageal cancer",
+          "target": "head and neck cancer",
           "weight": 13
         },
         {
-          "source": "Colorectal Cancer",
-          "target": "Pancreatic Cancer",
+          "source": "carcinoma non small cell lung",
+          "target": "lung neoplasms",
           "weight": 13
         },
         {
-          "source": "Melanoma",
-          "target": "Non-small Cell Lung Cancer",
+          "source": "colorectal cancer",
+          "target": "ovarian cancer",
           "weight": 13
         },
         {
-          "source": "Breast Cancer",
-          "target": "Esophageal Cancer",
+          "source": "colorectal cancer",
+          "target": "pancreatic cancer",
+          "weight": 13
+        },
+        {
+          "source": "breast cancer",
+          "target": "esophageal cancer",
           "weight": 12
         },
         {
-          "source": "Lung Cancer",
-          "target": "Metastatic Cancer",
-          "weight": 12
-        },
-        {
-          "source": "Breast Cancer",
-          "target": "Non Small Cell Lung Cancer",
-          "weight": 12
-        },
-        {
-          "source": "Gastric Cancer",
-          "target": "Ovarian Cancer",
+          "source": "gastric cancer",
+          "target": "ovarian cancer",
           "weight": 11
         },
         {
-          "source": "Breast Cancer",
-          "target": "Non-small Cell Lung Cancer",
+          "source": "head and neck cancer",
+          "target": "non small cell lung cancer",
           "weight": 11
         },
         {
-          "source": "Non Small Cell Lung Cancer",
-          "target": "Solid Tumor",
+          "source": "lung cancer",
+          "target": "lung neoplasms",
           "weight": 11
         },
         {
-          "source": "Lung Cancer",
-          "target": "Lung Neoplasms",
-          "weight": 11
-        },
-        {
-          "source": "Breast Cancer",
-          "target": "Non-Small Cell Lung Cancer",
+          "source": "non small cell lung cancer",
+          "target": "ovarian cancer",
           "weight": 10
         },
         {
-          "source": "Carcinoma, Non-Small-Cell Lung",
-          "target": "Lung Neoplasms",
+          "source": "cancer",
+          "target": "non small cell lung cancer",
           "weight": 10
         },
         {
-          "source": "Colorectal Cancer",
-          "target": "Solid Tumor",
+          "source": "colorectal cancer",
+          "target": "solid tumor",
           "weight": 10
         },
         {
-          "source": "Non-small Cell Lung Cancer",
-          "target": "Ovarian Cancer",
+          "source": "non small cell lung cancer",
+          "target": "prostate cancer",
           "weight": 9
         },
         {
-          "source": "Colorectal Cancer",
-          "target": "Non Small Cell Lung Cancer",
-          "weight": 9
-        },
-        {
-          "source": "Colorectal Cancer",
-          "target": "Non-small Cell Lung Cancer",
-          "weight": 9
-        },
-        {
-          "source": "NSCLC",
-          "target": "Non-small Cell Lung Cancer",
+          "source": "colorectal cancer",
+          "target": "head and neck cancer",
           "weight": 8
         },
         {
-          "source": "Non-Small Cell Lung Cancer",
-          "target": "Small Cell Lung Cancer",
+          "source": "colorectal cancer",
+          "target": "melanoma",
           "weight": 8
         },
         {
-          "source": "Colorectal Cancer",
-          "target": "Head and Neck Cancer",
+          "source": "esophageal cancer",
+          "target": "non small cell lung cancer",
           "weight": 8
         },
         {
-          "source": "Colorectal Cancer",
-          "target": "Melanoma",
-          "weight": 8
-        },
-        {
-          "source": "Lung Cancer",
-          "target": "Non-small Cell Lung Cancer",
-          "weight": 8
-        },
-        {
-          "source": "Melanoma",
-          "target": "Non-Small Cell Lung Cancer",
-          "weight": 8
-        },
-        {
-          "source": "Non Small Cell Lung Cancer",
-          "target": "Small Cell Lung Cancer",
-          "weight": 8
-        },
-        {
-          "source": "Carcinoma, Non-Small-Cell Lung",
-          "target": "Non-Small Cell Lung Cancer",
+          "source": "breast cancer",
+          "target": "cancer",
           "weight": 7
         },
         {
-          "source": "Breast Cancer",
-          "target": "Cancer",
+          "source": "gastric cancer",
+          "target": "pancreatic cancer",
           "weight": 7
         },
         {
-          "source": "Gastric Cancer",
-          "target": "Pancreatic Cancer",
+          "source": "esophageal cancer",
+          "target": "gastric cancer",
           "weight": 7
         },
         {
-          "source": "Esophageal Cancer",
-          "target": "Gastric Cancer",
+          "source": "colorectal cancer",
+          "target": "esophageal cancer",
           "weight": 7
         },
         {
-          "source": "Gastric Cancer",
-          "target": "Non-small Cell Lung Cancer",
+          "source": "carcinoma non small cell lung",
+          "target": "lung cancer",
           "weight": 7
         },
         {
-          "source": "Lung Cancer",
-          "target": "Non-Small Cell Lung Cancer",
-          "weight": 7
-        },
-        {
-          "source": "NSCLC",
-          "target": "Non Small Cell Lung Cancer",
+          "source": "carcinoma non small cell lung",
+          "target": "neoplasms",
           "weight": 6
         },
         {
-          "source": "Non-small Cell Lung Cancer",
-          "target": "Small Cell Lung Cancer",
+          "source": "breast cancer",
+          "target": "small cell lung cancer",
           "weight": 6
         },
         {
-          "source": "Gastric Cancer",
-          "target": "Head and Neck Cancer",
+          "source": "gastric cancer",
+          "target": "head and neck cancer",
           "weight": 6
         },
         {
-          "source": "Lung Cancer",
-          "target": "NSCLC",
+          "source": "lung cancer",
+          "target": "nsclc",
           "weight": 6
         },
         {
-          "source": "Ovarian Cancer",
-          "target": "Pancreatic Cancer",
+          "source": "ovarian cancer",
+          "target": "pancreatic cancer",
           "weight": 6
         },
         {
-          "source": "Colorectal Cancer",
-          "target": "Esophageal Cancer",
+          "source": "head and neck cancer",
+          "target": "ovarian cancer",
           "weight": 6
         },
         {
-          "source": "Head and Neck Cancer",
-          "target": "Ovarian Cancer",
+          "source": "ovarian cancer",
+          "target": "prostate cancer",
           "weight": 6
         },
         {
-          "source": "Advanced Solid Tumor",
-          "target": "Non Small Cell Lung Cancer",
-          "weight": 6
-        },
-        {
-          "source": "Non-Small Cell Lung Cancer",
-          "target": "Solid Tumor",
-          "weight": 6
-        },
-        {
-          "source": "Non-Small Cell Lung Cancer",
-          "target": "Pancreatic Cancer",
-          "weight": 6
-        },
-        {
-          "source": "Ovarian Cancer",
-          "target": "Prostate Cancer",
-          "weight": 6
-        },
-        {
-          "source": "Cancer",
-          "target": "Non-Small Cell Lung Cancer",
+          "source": "ovarian cancer",
+          "target": "small cell lung cancer",
           "weight": 5
         },
         {
-          "source": "Head and Neck Cancer",
-          "target": "Prostate Cancer",
+          "source": "head and neck cancer",
+          "target": "prostate cancer",
           "weight": 5
         },
         {
-          "source": "Carcinoma, Non-Small-Cell Lung",
-          "target": "Neoplasms",
+          "source": "head and neck cancer",
+          "target": "melanoma",
           "weight": 5
         },
         {
-          "source": "Breast Cancer",
-          "target": "Small Cell Lung Cancer",
+          "source": "cancer",
+          "target": "solid tumor",
           "weight": 5
         },
         {
-          "source": "Head and Neck Cancer",
-          "target": "Non Small Cell Lung Cancer",
+          "source": "extensive stage small cell lung cancer",
+          "target": "small cell lung cancer",
           "weight": 5
         },
         {
-          "source": "Non-small Cell Lung Cancer",
-          "target": "Solid Tumor",
+          "source": "melanoma",
+          "target": "ovarian cancer",
           "weight": 5
         },
         {
-          "source": "Head and Neck Cancer",
-          "target": "Melanoma",
+          "source": "pancreatic cancer",
+          "target": "solid tumor",
           "weight": 5
         },
         {
-          "source": "Non-small Cell Lung Cancer",
-          "target": "Pancreatic Cancer",
-          "weight": 5
-        },
-        {
-          "source": "Cancer",
-          "target": "Solid Tumor",
-          "weight": 5
-        },
-        {
-          "source": "Carcinoma, Non-Small-Cell Lung",
-          "target": "Lung Cancer",
-          "weight": 5
-        },
-        {
-          "source": "Advanced Solid Tumor",
-          "target": "Non-Small Cell Lung Cancer",
-          "weight": 5
-        },
-        {
-          "source": "Pancreatic Cancer",
-          "target": "Solid Tumor",
-          "weight": 5
-        },
-        {
-          "source": "Ovarian Cancer",
-          "target": "Small Cell Lung Cancer",
+          "source": "colorectal cancer",
+          "target": "non small cell lung carcinoma",
           "weight": 4
         },
         {
-          "source": "Esophageal Cancer",
-          "target": "Non-small Cell Lung Cancer",
+          "source": "carcinoma non small cell lung",
+          "target": "colorectal cancer",
           "weight": 4
         },
         {
-          "source": "Advanced Solid Tumor",
-          "target": "Non-small Cell Lung Cancer",
+          "source": "non small cell lung cancer",
+          "target": "non small cell lung cancer metastatic",
           "weight": 4
         },
         {
-          "source": "Head and Neck Cancer",
-          "target": "Non-small Cell Lung Cancer",
+          "source": "carcinoma non small cell lung",
+          "target": "non small cell lung carcinoma",
           "weight": 4
         },
         {
-          "source": "Melanoma",
-          "target": "Pancreatic Cancer",
+          "source": "melanoma",
+          "target": "pancreatic cancer",
           "weight": 4
         },
         {
-          "source": "NSCLC",
-          "target": "Non-Small Cell Lung Cancer",
+          "source": "breast cancer",
+          "target": "solid tumor",
           "weight": 4
         },
         {
-          "source": "Breast Cancer",
-          "target": "Solid Tumor",
+          "source": "lung neoplasms",
+          "target": "non small cell lung cancer",
           "weight": 4
         },
         {
-          "source": "Advanced Solid Tumor",
-          "target": "Metastatic Cancer",
+          "source": "neoplasms",
+          "target": "non small cell lung cancer",
           "weight": 4
         },
         {
-          "source": "Head and Neck Cancer",
-          "target": "Pancreatic Cancer",
+          "source": "gastric cancer",
+          "target": "small cell lung cancer",
           "weight": 4
         },
         {
-          "source": "Melanoma",
-          "target": "Ovarian Cancer",
+          "source": "head and neck cancer",
+          "target": "pancreatic cancer",
           "weight": 4
         },
         {
-          "source": "Lung Adenocarcinoma",
-          "target": "Lung Cancer",
-          "weight": 4
-        },
-        {
-          "source": "Non Small Cell Lung Cancer",
-          "target": "Prostate Cancer",
-          "weight": 4
-        },
-        {
-          "source": "Gastric Cancer",
-          "target": "Non-Small Cell Lung Cancer",
+          "source": "lung cancer",
+          "target": "small cell lung cancer",
           "weight": 3
         },
         {
-          "source": "Esophageal Cancer",
-          "target": "Prostate Cancer",
+          "source": "esophageal cancer",
+          "target": "prostate cancer",
           "weight": 3
         },
         {
-          "source": "Lung Adenocarcinoma",
-          "target": "Ovarian Cancer",
+          "source": "lung neoplasms",
+          "target": "neoplasms",
           "weight": 3
         },
         {
-          "source": "Lung Neoplasms",
-          "target": "Neoplasms",
+          "source": "cancer",
+          "target": "colorectal cancer",
           "weight": 3
         },
         {
-          "source": "Cancer",
-          "target": "Colorectal Cancer",
+          "source": "cancer",
+          "target": "melanoma",
           "weight": 3
         },
         {
-          "source": "NSCLC",
-          "target": "NSCLC Stage IV",
+          "source": "melanoma",
+          "target": "prostate cancer",
           "weight": 3
         },
         {
-          "source": "Metastatic Cancer",
-          "target": "Non Small Cell Lung Cancer",
+          "source": "non small cell lung cancer nsclc",
+          "target": "ovarian cancer",
           "weight": 3
         },
         {
-          "source": "Esophageal Cancer",
-          "target": "Non Small Cell Lung Cancer",
+          "source": "non small cell lung cancer",
+          "target": "non small cell lung carcinoma",
           "weight": 3
         },
         {
-          "source": "Cancer",
-          "target": "Non Small Cell Lung Cancer",
+          "source": "advanced solid tumor",
+          "target": "cancer",
           "weight": 3
         },
         {
-          "source": "Gastric Cancer",
-          "target": "Non Small Cell Lung Cancer",
+          "source": "colorectal cancer",
+          "target": "small cell lung cancer",
           "weight": 3
         },
         {
-          "source": "Melanoma",
-          "target": "Prostate Cancer",
+          "source": "lung cancer",
+          "target": "solid tumor",
           "weight": 3
         },
         {
-          "source": "Non Small Cell Lung Cancer",
-          "target": "Pancreatic Cancer",
+          "source": "lung cancer",
+          "target": "neoplasms",
           "weight": 3
         },
         {
-          "source": "Non-small Cell Lung Cancer",
-          "target": "Prostate Cancer",
+          "source": "esophageal cancer",
+          "target": "pancreatic cancer",
           "weight": 3
         },
         {
-          "source": "Cancer",
-          "target": "Metastatic Cancer",
+          "source": "melanoma",
+          "target": "solid tumor",
           "weight": 3
         },
         {
-          "source": "Advanced Solid Tumor",
-          "target": "Cancer",
+          "source": "breast cancer",
+          "target": "non small cell lung carcinoma",
           "weight": 3
         },
         {
-          "source": "Gastric Cancer",
-          "target": "Small Cell Lung Cancer",
+          "source": "cancer",
+          "target": "ovarian cancer",
           "weight": 3
         },
         {
-          "source": "Lung Cancer",
-          "target": "Solid Tumor",
-          "weight": 3
-        },
-        {
-          "source": "Lung Adenocarcinoma",
-          "target": "Lung Cancer (NSCLC)",
-          "weight": 3
-        },
-        {
-          "source": "Colorectal Cancer",
-          "target": "Metastatic Cancer",
-          "weight": 3
-        },
-        {
-          "source": "Lung Cancer",
-          "target": "Neoplasms",
-          "weight": 3
-        },
-        {
-          "source": "Esophageal Cancer",
-          "target": "Pancreatic Cancer",
-          "weight": 3
-        },
-        {
-          "source": "Lung Neoplasms",
-          "target": "Non-Small Cell Lung Cancer",
-          "weight": 3
-        },
-        {
-          "source": "Melanoma",
-          "target": "Solid Tumor",
-          "weight": 3
-        },
-        {
-          "source": "Non Small Cell Lung Cancer",
-          "target": "Non-small Cell Lung Cancer",
+          "source": "carcinoma non small cell lung",
+          "target": "prostate cancer",
           "weight": 2
         },
         {
-          "source": "Carcinoma, Non-Small-Cell Lung",
-          "target": "Colorectal Cancer",
+          "source": "esophageal cancer",
+          "target": "small cell lung cancer",
           "weight": 2
         },
         {
-          "source": "Lung Cancer",
-          "target": "Small Cell Lung Cancer",
+          "source": "carcinoma non small cell lung",
+          "target": "solid tumor",
           "weight": 2
         },
         {
-          "source": "Cancer",
-          "target": "Melanoma",
+          "source": "extensive stage small cell lung cancer",
+          "target": "solid tumor",
           "weight": 2
         },
         {
-          "source": "Esophageal Cancer",
-          "target": "Small Cell Lung Cancer",
+          "source": "gastric cancer",
+          "target": "prostate cancer",
           "weight": 2
         },
         {
-          "source": "Lung Cancer",
-          "target": "NSCLC Stage IV",
+          "source": "advanced solid tumor",
+          "target": "colorectal cancer",
           "weight": 2
         },
         {
-          "source": "NSCLC Stage IV",
-          "target": "Non Small Cell Lung Cancer",
+          "source": "advanced solid tumor",
+          "target": "breast cancer",
           "weight": 2
         },
         {
-          "source": "Carcinoma, Non-Small-Cell Lung",
-          "target": "Solid Tumor",
+          "source": "gastric cancer",
+          "target": "melanoma",
           "weight": 2
         },
         {
-          "source": "Carcinoma, Non-Small-Cell Lung",
-          "target": "Non Small Cell Lung Cancer",
+          "source": "prostate cancer",
+          "target": "small cell lung cancer",
           "weight": 2
         },
         {
-          "source": "Gastric Cancer",
-          "target": "Prostate Cancer",
+          "source": "cancer",
+          "target": "prostate cancer",
           "weight": 2
         },
         {
-          "source": "Metastatic Cancer",
-          "target": "Solid Tumor",
+          "source": "neoplasms",
+          "target": "prostate cancer",
           "weight": 2
         },
         {
-          "source": "Advanced Solid Tumor",
-          "target": "Colorectal Cancer",
+          "source": "breast cancer",
+          "target": "neoplasms",
           "weight": 2
         },
         {
-          "source": "Colorectal Cancer",
-          "target": "Small Cell Lung Cancer",
+          "source": "lung cancer",
+          "target": "non small cell lung cancer nsclc",
           "weight": 2
         },
         {
-          "source": "Advanced Solid Tumor",
-          "target": "Breast Cancer",
+          "source": "carcinoma non small cell lung",
+          "target": "melanoma",
           "weight": 2
         },
         {
-          "source": "Gastric Cancer",
-          "target": "Melanoma",
+          "source": "melanoma",
+          "target": "neoplasms",
           "weight": 2
         },
         {
-          "source": "Metastatic Cancer",
-          "target": "Ovarian Cancer",
+          "source": "non small cell lung cancer",
+          "target": "non small cell lung cancer nsclc",
           "weight": 2
         },
         {
-          "source": "Metastatic Cancer",
-          "target": "Non-small Cell Lung Cancer",
+          "source": "melanoma",
+          "target": "non small cell lung carcinoma",
           "weight": 2
         },
         {
-          "source": "Cancer",
-          "target": "Prostate Cancer",
+          "source": "advanced solid tumor",
+          "target": "melanoma",
           "weight": 2
         },
         {
-          "source": "Neoplasms",
-          "target": "Prostate Cancer",
+          "source": "cancer",
+          "target": "nsclc",
           "weight": 2
         },
         {
-          "source": "Breast Cancer",
-          "target": "Neoplasms",
+          "source": "cancer",
+          "target": "neoplasms",
           "weight": 2
         },
         {
-          "source": "Esophageal Cancer",
-          "target": "Lung Cancer (NSCLC)",
+          "source": "pancreatic cancer",
+          "target": "prostate cancer",
           "weight": 2
         },
         {
-          "source": "Non-Small Cell Lung Cancer",
-          "target": "Prostate Cancer",
+          "source": "cancer",
+          "target": "lung neoplasms",
           "weight": 2
         },
         {
-          "source": "Head and Neck Cancer",
-          "target": "Non-Small Cell Lung Cancer",
+          "source": "non small cell lung cancer nsclc",
+          "target": "solid tumor",
           "weight": 2
         },
         {
-          "source": "Melanoma",
-          "target": "Neoplasms",
+          "source": "carcinoma non small cell lung",
+          "target": "ovarian cancer",
           "weight": 2
         },
         {
-          "source": "Melanoma",
-          "target": "Metastatic Cancer",
+          "source": "cancer",
+          "target": "pancreatic cancer",
           "weight": 2
         },
         {
-          "source": "Advanced Solid Tumor",
-          "target": "Melanoma",
+          "source": "ovarian cancer",
+          "target": "solid tumor",
           "weight": 2
         },
         {
-          "source": "Cancer",
-          "target": "NSCLC",
+          "source": "lung cancer",
+          "target": "non small cell lung carcinoma",
           "weight": 2
         },
         {
-          "source": "Cancer",
-          "target": "Neoplasms",
-          "weight": 2
-        },
-        {
-          "source": "Pancreatic Cancer",
-          "target": "Prostate Cancer",
-          "weight": 2
-        },
-        {
-          "source": "Cancer",
-          "target": "Lung Neoplasms",
-          "weight": 2
-        },
-        {
-          "source": "Cancer",
-          "target": "Ovarian Cancer",
-          "weight": 2
-        },
-        {
-          "source": "Cancer",
-          "target": "Pancreatic Cancer",
-          "weight": 2
-        },
-        {
-          "source": "Ovarian Cancer",
-          "target": "Solid Tumor",
-          "weight": 2
-        },
-        {
-          "source": "Lung Adenocarcinoma",
-          "target": "Non Small Cell Lung Cancer",
-          "weight": 2
-        },
-        {
-          "source": "Carcinoma, Non-Small-Cell Lung",
-          "target": "Prostate Cancer",
+          "source": "non small cell lung cancer",
+          "target": "non squamous non small cell lung cancer",
           "weight": 1
         },
         {
-          "source": "Carcinoma, Non-Small-Cell Lung",
-          "target": "Non-small Cell Lung Cancer",
+          "source": "gastric cancer",
+          "target": "non small cell lung cancer nsclc",
           "weight": 1
         },
         {
-          "source": "Carcinoma, Non-Small-Cell Lung",
-          "target": "NSCLC",
+          "source": "non small cell lung cancer nsclc",
+          "target": "pancreatic cancer",
           "weight": 1
         },
         {
-          "source": "Metastatic Cancer",
-          "target": "NSCLC Stage IV",
+          "source": "carcinoma non small cell lung",
+          "target": "nsclc",
           "weight": 1
         },
         {
-          "source": "Colorectal Cancer",
-          "target": "NSCLC",
+          "source": "non small cell lung cancer metastatic",
+          "target": "non small cell lung carcinoma",
           "weight": 1
         },
         {
-          "source": "Non Small Cell Lung Cancer",
-          "target": "Non-Small Cell Lung Cancer",
+          "source": "colorectal cancer",
+          "target": "nsclc",
+          "weight": 1
+        },
+        {
+          "source": "advanced solid tumor",
+          "target": "solid tumor",
+          "weight": 1
+        },
+        {
+          "source": "advanced solid tumor",
+          "target": "ovarian cancer",
+          "weight": 1
+        },
+        {
+          "source": "breast cancer",
+          "target": "carcinoma non small cell lung",
+          "weight": 1
+        },
+        {
+          "source": "carcinoma non small cell lung",
+          "target": "pancreatic cancer",
+          "weight": 1
+        },
+        {
+          "source": "cancer",
+          "target": "small cell lung cancer",
+          "weight": 1
+        },
+        {
+          "source": "advanced solid tumor",
+          "target": "small cell lung cancer",
+          "weight": 1
+        },
+        {
+          "source": "lung neoplasms",
+          "target": "non small cell lung carcinoma",
+          "weight": 1
+        },
+        {
+          "source": "cancer",
+          "target": "non small cell lung cancer nsclc",
+          "weight": 1
+        },
+        {
+          "source": "breast cancer",
+          "target": "non small cell lung cancer nsclc",
+          "weight": 1
+        },
+        {
+          "source": "nsclc",
+          "target": "small cell lung cancer",
+          "weight": 1
+        },
+        {
+          "source": "non small cell lung cancer metastatic",
+          "target": "nsclc",
+          "weight": 1
+        },
+        {
+          "source": "gastric cancer",
+          "target": "nsclc",
+          "weight": 1
+        },
+        {
+          "source": "small cell lung cancer",
+          "target": "solid tumor",
+          "weight": 1
+        },
+        {
+          "source": "non small cell lung cancer metastatic",
+          "target": "solid tumor",
+          "weight": 1
+        },
+        {
+          "source": "head and neck cancer",
+          "target": "solid tumor",
+          "weight": 1
+        },
+        {
+          "source": "carcinoma non small cell lung",
+          "target": "non small cell lung cancer nsclc",
+          "weight": 1
+        },
+        {
+          "source": "non small cell lung cancer nsclc",
+          "target": "non small cell lung carcinoma",
+          "weight": 1
+        },
+        {
+          "source": "advanced solid tumor",
+          "target": "head and neck cancer",
+          "weight": 1
+        },
+        {
+          "source": "advanced solid tumor",
+          "target": "nsclc",
+          "weight": 1
+        },
+        {
+          "source": "lung neoplasms",
+          "target": "small cell lung cancer",
+          "weight": 1
+        },
+        {
+          "source": "lung cancer",
+          "target": "non small cell lung cancer metastatic",
+          "weight": 1
+        },
+        {
+          "source": "advanced solid tumor",
+          "target": "non small cell lung carcinoma",
+          "weight": 1
+        },
+        {
+          "source": "breast cancer",
+          "target": "nsclc",
+          "weight": 1
+        },
+        {
+          "source": "advanced non small cell lung cancer",
+          "target": "melanoma",
+          "weight": 1
+        },
+        {
+          "source": "cancer",
+          "target": "gastric cancer",
+          "weight": 1
+        },
+        {
+          "source": "gastric cancer",
+          "target": "neoplasms",
+          "weight": 1
+        },
+        {
+          "source": "head and neck cancer",
+          "target": "nsclc",
           "weight": 1
         }
       ],
@@ -911,10 +911,11 @@
       "time_granularity": null,
       "truncated": true,
       "count_verified": false,
+      "counts_exact": false,
       "count_server": null,
       "query_interpretation": "Co-occurrence network of conditions across 5,000 studies",
       "warnings": [
-        "Network truncated to top 25 nodes (2898 total). Increase top_n in build_network to include more."
+        "Network truncated to top 25 nodes (2715 total). Increase top_n in build_network to include more."
       ]
     }
   }

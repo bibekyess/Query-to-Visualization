@@ -12,8 +12,11 @@ _TIME_FIELDS = {"start_year", "start_month", "completion_year", "completion_mont
 # Enrollment bucket produces ordered size ranges — a histogram, not a bar chart.
 _CONTINUOUS_FIELDS = {"enrollment_bucket"}
 
-# Only allow known types so an invalid LLM hint can't produce a broken spec.
-_VALID_TYPES = {"bar_chart", "time_series", "histogram", "scatter", "network_graph", "grouped_bar"}
+# Types the categorical aggregate path can honestly produce. Notably excludes
+# scatter (needs two continuous variables, not category-vs-count) and grouped_bar
+# (needs a second series dimension) — accepting those hints would mislabel a plain
+# bar chart. network_graph comes from build_network, handled separately above.
+_VALID_TYPES = {"bar_chart", "time_series", "histogram"}
 
 
 def select(group_by: str, viz_hint: str | None) -> str:
@@ -29,7 +32,8 @@ def select(group_by: str, viz_hint: str | None) -> str:
     if group_by in _CONTINUOUS_FIELDS:
         return "histogram"
 
-    # For everything else, trust the LLM's hint if it named a recognised type.
+    # For everything else, trust the LLM's hint only if it named a type this path
+    # can honestly render; otherwise fall through to a bar chart.
     if viz_hint and viz_hint in _VALID_TYPES:
         return viz_hint
 

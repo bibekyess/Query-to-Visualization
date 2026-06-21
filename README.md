@@ -75,8 +75,7 @@ Content-Type: application/json
 ```
 {
   "visualization": {
-    "type":     string          — bar_chart | time_series | histogram |
-                                  scatter | network_graph | grouped_bar
+    "type":     string          — bar_chart | time_series | histogram | network_graph
     "title":    string          — human-readable chart title
     "encoding": {               — Vega-Lite-style visual channel mapping
       "x":      {"field": string},
@@ -98,8 +97,12 @@ Content-Type: application/json
     "total_count":         int     — authoritative count from ClinicalTrials.gov
     "fetched_count":       int     — records actually fetched & aggregated
     "time_granularity":    string  — "month" | "year" | null
-    "truncated":           bool    — true if total > fetched
-    "count_verified":      bool    — true when all records were fetched
+    "truncated":           bool    — true if total > fetched (records sampled)
+    "count_verified":      bool    — true when the full corpus was fetched
+    "counts_exact":        bool    — true when bar values are server-authoritative
+                                     (full corpus, or per-group countTotal queries);
+                                     false only when bars are sampled from a truncated set
+    "count_server":        int     — server total, shown when it differs from fetched
     "query_interpretation": string
     "warnings":            string[]
   }
@@ -108,22 +111,27 @@ Content-Type: application/json
 
 ### Deep Citations
 
-Each data point in `data` carries a `citations` array:
+Each data point in `data` carries a `citations` array. Each citation names the
+exact field value that placed the record in that bucket, plus the JSON path it
+was read from — so a citation actually substantiates its own bar:
 
 ```json
 {
   "phase": "Phase 3",
-  "count": 41,
+  "count": 2446,
   "citations": [
     {
       "nct_id": "NCT04345250",
-      "excerpt": "A Phase 3 randomized study evaluating pembrolizumab in combination..."
+      "excerpt": "PHASE3",
+      "source_field": "protocolSection.designModule.phases"
     }
   ]
 }
 ```
 
 Each `nct_id` links directly to `https://clinicaltrials.gov/study/<nct_id>`.
+Citations are capped at 3 per bucket (configurable via `citations_per_group`)
+and are drawn from the fetched record sample even when bar counts are exact.
 
 ---
 
@@ -202,12 +210,34 @@ Because we paginate and aggregate record-by-record (never using the global
 `/stats/field/values` endpoint), each bucket already holds the NCT IDs that
 contributed to it. Citations fall out of aggregation at zero extra API cost.
 
-### Count verification
+### Exact counts, even on large result sets
 
-For every scoped query, `search_trials` calls `countTotal=true&pageSize=1`
-to get an authoritative server-side total. If `fetched_count == total_count`,
-`count_verified = true`. If records were truncated (> 5,000 default), a
-warning is emitted in `response_metadata`.
+Aggregating only the fetched records is biased when a query matches more than the
+fetch cap: the sample is the first N records in the API's default order, not a
+random draw. So bar values are computed by tier:
+
+1. **Full corpus fetched** (`total ≤ fetched`) → the sample *is* the whole set, so
+   its counts are exact.
+2. **Truncated, enumerable field** (`phase`, `status`, `sponsor_class`,
+   `intervention_type`, `study_type`, `enrollment_bucket`, `start_year`,
+   `completion_year`) → each bucket's value comes from a dedicated
+   `countTotal=true&pageSize=1` query with the bucket pushed into `filter.advanced`
+   (e.g. `AREA[Phase]PHASE3`). Counts are then exact regardless of corpus size.
+3. **Truncated, unbounded field** (`condition`, `sponsor_name`, `country`) → the
+   value space is too large to enumerate cheaply, so bars are an approximation
+   from the sample, flagged with `counts_exact = false` and an explicit warning.
+
+`counts_exact` in `response_metadata` tells a consumer which case applied;
+citation excerpts are always drawn from the fetched sample.
+
+### Network entity normalization
+
+Condition/intervention names arrive with inconsistent casing, hyphenation and
+punctuation ("Non-small Cell Lung Cancer" vs "Non Small Cell Lung Cancer"). Nodes
+are keyed on a normalized form so these variants collapse into one node instead of
+fragmenting the graph; the most common original spelling is kept as the display
+label. (Conservative by design — it won't merge true synonyms with different word
+order, e.g. "Carcinoma, Non-Small-Cell Lung".)
 
 ### Rate limit safety
 
@@ -224,9 +254,12 @@ to ≤ 5 calls for most queries.
 | `bar_chart` | Default for categorical distributions |
 | `time_series` | `group_by` is `start_year` / `start_month` / `completion_year` |
 | `histogram` | `group_by` is `enrollment_bucket` |
-| `scatter` | LLM hint `"scatter"` |
 | `network_graph` | `build_network` is called |
-| `grouped_bar` | LLM hint `"grouped_bar"` |
+
+`scatter` and `grouped_bar` are intentionally **not** offered: the single-dataset
+aggregate path produces category-vs-count data, and labeling that as a scatter
+(which needs two continuous variables) or a grouped bar (which needs a second
+series) would be misleading. Both are tracked under Future Work below.
 
 ### Supported `group_by` fields for `aggregate`
 
@@ -238,21 +271,33 @@ to ≤ 5 calls for most queries.
 
 ## Limitations & Future Work
 
-- **Comparison queries** ("Drug A vs Drug B"): the current design supports one
-  dataset per request. Side-by-side comparisons would require merging two
-  datasets with a `series_by` dimension — feasible but not yet implemented.
-- **Scatter plots**: require two continuous fields per study (e.g. enrollment vs
-  duration). Currently triggered only by LLM hint; richer auto-detection is a
-  next step.
-- **In-memory state**: datasets are cached per process with no TTL or eviction.
-  Under sustained load a Redis or SQLite backing store would be appropriate.
-- **Citation excerpt length**: excerpts are capped at 200 characters from
-  `briefSummary`. The full text is available via the single-study endpoint
-  (`/studies/{nct_id}`).
-- **Records cap**: `max_records` defaults to 5,000. Very broad queries (e.g.
-  "all cancer trials") return a representative sample, not the full corpus.
-- **No streaming**: the endpoint is synchronous; large datasets (close to
-  10,000 records) may take 15–30 seconds.
+- **Comparison queries & grouped bars** ("Drug A vs Drug B", "two conditions"):
+  the current design is one dataset per request. Side-by-side comparison requires
+  a `series_by` dimension (or merging two datasets), which would also unlock a
+  genuine `grouped_bar`. Feasible, not yet built.
+- **Scatter plots**: need two continuous fields per study (e.g. enrollment vs
+  duration). Not offered today because the aggregate path is categorical-vs-count;
+  a dedicated two-field extraction path is the next step.
+- **Approximate counts for unbounded fields**: when a `condition` / `sponsor_name`
+  / `country` query is truncated, those bars are sampled (flagged via
+  `counts_exact=false`). A two-pass refinement — sample to find candidate top-N
+  labels, then `countTotal` each displayed label — would make even these exact.
+- **Caching**: the API rate-limits and per-bucket count queries add a few requests
+  per call. An in-memory TTL cache keyed on search params (Redis for horizontal
+  scaling) would speed up repeat/demo queries — "appropriate handling of
+  real-world API data."
+- **API endpoint coverage**: only `GET /studies` is used (list + `countTotal` +
+  pagination + `fields` projection), which fits an aggregation/network workload.
+  `GET /studies/{nctId}` would enable a single-trial "zoom-in" with deep fields
+  (full eligibility/results text); `/studies/enums` and `/studies/metadata` could
+  replace the statically-captured field/enum reference with live discovery.
+- **Structured-output verification**: `finalize_visualization` is schema-typed,
+  but adding an explicit validate/repair step in the loop would harden against
+  malformed model output.
+- **In-memory state**: datasets/results are cached per process with no TTL or
+  eviction. Under sustained load a Redis or SQLite backing store would fit.
+- **No streaming**: the endpoint is synchronous; very broad queries (near the
+  10,000-record cap) may take 15–30 seconds.
 
 ---
 
@@ -280,8 +325,13 @@ assistant. Claude was used to:
    (field projection, Essie filters, `countTotal`, pagination token names).
 2. The numeric anti-hallucination invariant was verified structurally: no data
    values pass through the LLM's context — only UUIDs and field name strings.
-3. End-to-end tests were run against the live API; 6 real example outputs are
-   provided in `examples/` covering every supported visualization type.
+3. A unit-test suite (`uv run pytest`, 33 tests, no network) covers the
+   deterministic core — extractors, the Essie filter builder, the viz selector,
+   both count tiers in `aggregate` (stubbed count fn), and network co-occurrence.
+4. Exact-count correctness was spot-checked against the live API: per-bucket bar
+   values match standalone `countTotal` queries (e.g. diabetes Phase 3 = 2,446).
+5. End-to-end runs against the live API produced the 6 example outputs in
+   `examples/`, covering every supported visualization type.
 
 The solution was designed deliberately: architecture trade-offs were reasoned
 through before writing code (e.g. why tool-calling over a single prompt, why
@@ -298,8 +348,8 @@ response JSON. To regenerate them: `uv run python tests/run_examples.py`.
 | File | Visualization type | Query |
 |------|--------------------|-------|
 | `01_time_series.json` | `time_series` | Pembrolizumab trials per year since 2015 |
-| `02_bar_chart.json` | `bar_chart` | Diabetes trial phase distribution |
+| `02_bar_chart.json` | `bar_chart` | Diabetes trial phase distribution (exact counts) |
 | `03_geographic.json` | `bar_chart` (by country) | Countries with the most recruiting breast cancer trials |
 | `04_network_graph.json` | `network_graph` | Condition co-occurrence network in lung cancer trials |
 | `05_histogram.json` | `histogram` | Enrollment size distribution for Phase 3 cancer trials |
-| `06_scatter.json` | `scatter` | Cardiovascular trial counts by sponsor type |
+| `06_sponsor_class.json` | `bar_chart` | Cardiovascular trials by sponsor type |

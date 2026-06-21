@@ -65,18 +65,29 @@ def _finalize_agg(
     total_count = meta.get("total_count", 0)
     fetched_count = meta.get("fetched_count", 0)
     # count_verified = True only when we fetched every record (no truncation).
-    # When False, the aggregation is over a sample and the server total is shown separately.
     count_verified = total_count == fetched_count
+    # counts_exact = bar values are server-authoritative even if records were truncated
+    # (computed via per-group countTotal queries). Set by aggregate().
+    counts_exact = result.get("counts_exact", count_verified)
 
     # Expose the query params that were actually sent to the API so the response is auditable.
     filters = {k: v for k, v in (meta.get("query_params") or {}).items()}
     filters["source"] = "clinicaltrials.gov"
 
     warnings: list[str] = []
-    if total_count > fetched_count:
+    if total_count > fetched_count and counts_exact:
+        # Records were sampled, but the bars themselves are exact server-side counts;
+        # only the citation excerpts are drawn from the fetched subset.
         warnings.append(
-            f"Results truncated: {fetched_count:,} of {total_count:,} studies fetched. "
-            "Aggregation reflects fetched subset."
+            f"Bar counts are exact server-side totals over all {total_count:,} studies; "
+            f"citation excerpts are sampled from {fetched_count:,} fetched records."
+        )
+    elif total_count > fetched_count:
+        # Unbounded field on a truncated set — counts are an approximation from the sample.
+        warnings.append(
+            f"Approximate: top groups counted from a {fetched_count:,}-of-{total_count:,} "
+            "sample (this field can't be counted exactly server-side). "
+            "Proportions may not reflect the full corpus."
         )
 
     return VisualizationResponse(
@@ -93,6 +104,7 @@ def _finalize_agg(
             time_granularity=time_granularity,
             truncated=total_count > fetched_count,
             count_verified=count_verified,
+            counts_exact=counts_exact,
             count_server=total_count if not count_verified else None,
             query_interpretation=f"Grouped {fetched_count:,} fetched studies by {group_by!r}",
             warnings=warnings,
@@ -141,6 +153,7 @@ def _finalize_network(
             fetched_count=fetched,
             truncated=result.get("truncated", False),
             count_verified=False,
+            counts_exact=False,   # co-occurrence weights are sample-derived, not server counts
             query_interpretation=(
                 f"Co-occurrence network of {node_type}s across {fetched:,} studies"
             ),

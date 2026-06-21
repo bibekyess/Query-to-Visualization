@@ -59,6 +59,54 @@ def count_studies(params: dict) -> int:
     return data.get("totalCount", 0)
 
 
+def _merge_advanced(params: dict, clause: str) -> dict:
+    """
+    AND an extra Essie clause into an existing filter.advanced expression.
+
+    The existing expression is wrapped in parens so a compound base filter
+    (e.g. "(A OR B)") still combines correctly with the new clause.
+    """
+    existing = params.get("filter.advanced")
+    merged = f"({existing}) AND {clause}" if existing else clause
+    return {**params, "filter.advanced": merged}
+
+
+def count_with_clause(base_params: dict, clause: str) -> int:
+    """
+    Authoritative server-side count for the base query narrowed by one extra
+    Essie clause (e.g. AREA[Phase]PHASE3). Used to compute exact per-group bar
+    values when the result set is too large to fetch in full.
+    """
+    return count_studies(_merge_advanced(base_params, clause))
+
+
+def date_bounds(base_params: dict, area: str) -> tuple[int | None, int | None]:
+    """
+    Return the (earliest, latest) year present for a date field in the scoped set,
+    via two cheap sort+pageSize=1 queries. Used to size year buckets for exact
+    time-series counts. Returns (None, None) when the set has no usable dates.
+
+    `area` is the Essie/PascalCase field name: "StartDate" or "CompletionDate".
+    """
+    struct_key = "startDateStruct" if area == "StartDate" else "completionDateStruct"
+
+    def _edge_year(direction: str) -> int | None:
+        p = {**base_params, "sort": f"{area}:{direction}", "fields": f"NCTId,{area}", "pageSize": "1"}
+        studies = _get_with_retry(_studies_url(), p).get("studies", [])
+        if not studies:
+            return None
+        date = (
+            studies[0].get("protocolSection", {}).get("statusModule", {})
+            .get(struct_key, {}).get("date")
+        )
+        return int(date[:4]) if date and len(date) >= 4 and date[:4].isdigit() else None
+
+    lo, hi = _edge_year("asc"), _edge_year("desc")
+    if lo is None or hi is None:
+        return (None, None)
+    return (min(lo, hi), max(lo, hi))
+
+
 def fetch_all_studies(params: dict, max_records: int = 5000) -> list[dict]:
     """
     Paginate through all matching studies with standard field projection.

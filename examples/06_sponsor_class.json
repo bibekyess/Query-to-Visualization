@@ -1,0 +1,197 @@
+{
+  "example": "06_sponsor_class",
+  "description": "Cardiovascular trials by sponsor type (bar_chart)",
+  "request": {
+    "query": "How are cardiovascular trials distributed across sponsor types?",
+    "filters": {
+      "condition": "cardiovascular"
+    }
+  },
+  "response": {
+    "visualization": {
+      "type": "bar_chart",
+      "title": "Distribution of Cardiovascular Trials Across Sponsor Types",
+      "encoding": {
+        "x": {
+          "field": "sponsor_class"
+        },
+        "y": {
+          "field": "count"
+        }
+      },
+      "data": [
+        {
+          "sponsor_class": "OTHER",
+          "count": 49219,
+          "citations": [
+            {
+              "nct_id": "NCT01994161",
+              "excerpt": "OTHER",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            },
+            {
+              "nct_id": "NCT01328470",
+              "excerpt": "OTHER",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            },
+            {
+              "nct_id": "NCT00839670",
+              "excerpt": "OTHER",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            }
+          ]
+        },
+        {
+          "sponsor_class": "INDUSTRY",
+          "count": 13022,
+          "citations": [
+            {
+              "nct_id": "NCT00596661",
+              "excerpt": "INDUSTRY",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            },
+            {
+              "nct_id": "NCT06174766",
+              "excerpt": "INDUSTRY",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            },
+            {
+              "nct_id": "NCT03108066",
+              "excerpt": "INDUSTRY",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            }
+          ]
+        },
+        {
+          "sponsor_class": "OTHER_GOV",
+          "count": 1878,
+          "citations": [
+            {
+              "nct_id": "NCT06893731",
+              "excerpt": "OTHER_GOV",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            },
+            {
+              "nct_id": "NCT04058639",
+              "excerpt": "OTHER_GOV",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            },
+            {
+              "nct_id": "NCT07338773",
+              "excerpt": "OTHER_GOV",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            }
+          ]
+        },
+        {
+          "sponsor_class": "NIH",
+          "count": 1325,
+          "citations": [
+            {
+              "nct_id": "NCT00005346",
+              "excerpt": "NIH",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            },
+            {
+              "nct_id": "NCT00005526",
+              "excerpt": "NIH",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            },
+            {
+              "nct_id": "NCT00000503",
+              "excerpt": "NIH",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            }
+          ]
+        },
+        {
+          "sponsor_class": "FED",
+          "count": 611,
+          "citations": [
+            {
+              "nct_id": "NCT01109602",
+              "excerpt": "FED",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            },
+            {
+              "nct_id": "NCT00013273",
+              "excerpt": "FED",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            },
+            {
+              "nct_id": "NCT00237757",
+              "excerpt": "FED",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            }
+          ]
+        },
+        {
+          "sponsor_class": "NETWORK",
+          "count": 505,
+          "citations": [
+            {
+              "nct_id": "NCT03733431",
+              "excerpt": "NETWORK",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            },
+            {
+              "nct_id": "NCT02970773",
+              "excerpt": "NETWORK",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            },
+            {
+              "nct_id": "NCT02374229",
+              "excerpt": "NETWORK",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            }
+          ]
+        },
+        {
+          "sponsor_class": "INDIV",
+          "count": 58,
+          "citations": [
+            {
+              "nct_id": "NCT01472640",
+              "excerpt": "INDIV",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            },
+            {
+              "nct_id": "NCT02020421",
+              "excerpt": "INDIV",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            },
+            {
+              "nct_id": "NCT05043324",
+              "excerpt": "INDIV",
+              "source_field": "protocolSection.sponsorCollaboratorsModule.leadSponsor.class"
+            }
+          ]
+        },
+        {
+          "sponsor_class": "UNKNOWN",
+          "count": 5,
+          "citations": []
+        }
+      ],
+      "nodes": null,
+      "edges": null,
+      "filters": {
+        "query.cond": "cardiovascular",
+        "source": "clinicaltrials.gov"
+      }
+    },
+    "response_metadata": {
+      "total_count": 66623,
+      "fetched_count": 5000,
+      "time_granularity": null,
+      "truncated": true,
+      "count_verified": false,
+      "counts_exact": true,
+      "count_server": 66623,
+      "query_interpretation": "Grouped 5,000 fetched studies by 'sponsor_class'",
+      "warnings": [
+        "Bar counts are exact server-side totals over all 66,623 studies; citation excerpts are sampled from 5,000 fetched records."
+      ]
+    }
+  }
+}

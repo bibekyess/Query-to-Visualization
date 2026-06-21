@@ -6,14 +6,14 @@
     "filters": {
       "condition": "cancer",
       "phase": [
-        "3"
+        "PHASE3"
       ]
     }
   },
   "response": {
     "visualization": {
       "type": "histogram",
-      "title": "Distribution of Enrollment Sizes for Phase 3 Cancer Trials",
+      "title": "Enrollment Size Distribution for Phase 3 Cancer Trials",
       "encoding": {
         "x": {
           "field": "enrollment_bucket"
@@ -25,109 +25,127 @@
       "data": [
         {
           "enrollment_bucket": "200–999",
-          "count": 2577,
+          "count": 5519,
           "citations": [
             {
               "nct_id": "NCT00089661",
-              "excerpt": "The purpose of this trial is to evaluate AMG 162 in the treatment of bone loss in subjects undergoing Aromatase Inhibitor Therapy for Non-metastatic Breast Cancer."
+              "excerpt": "Enrollment: 252",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             },
             {
               "nct_id": "NCT04296370",
-              "excerpt": "This is a multicenter, randomized, open-label, 3-arm Phase 3 study to evaluate the efficacy and safety of Fluzoparib alone or with Apatinib versus Physicians Choice Chemotherapy, as treatment, in pati"
+              "excerpt": "Enrollment: 474",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             },
             {
               "nct_id": "NCT05155254",
-              "excerpt": "Phase 3, multicenter, international, open-label, randomized, 2-arm trial investigating the safety and efficacy of IO102-IO103 in combination with pembrolizumab as first-line treatment for patients wit"
+              "excerpt": "Enrollment: 407",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             }
           ]
         },
         {
           "enrollment_bucket": "50–199",
-          "count": 1291,
+          "count": 2822,
           "citations": [
             {
               "nct_id": "NCT00003627",
-              "excerpt": "RATIONALE: Radiation therapy uses high-energy x-rays to damage tumor cells. Drugs used in chemotherapy use different ways to stop tumor cells from dividing so they stop growing or die. Combining chemo"
+              "excerpt": "Enrollment: 160",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             },
             {
               "nct_id": "NCT05029531",
-              "excerpt": "The innovation of this protocol is the risk-adapted choice of therapy and the use of a combination of chemotherapy with immunotherapy and hematopoietic stem cell transplantation for patients with risk"
+              "excerpt": "Enrollment: 80",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             },
             {
               "nct_id": "NCT05181605",
-              "excerpt": "Resectable Pancreatic Cancer represents an important health problem not because of its incidence, but because of its high mortality. Diagnosis in the initial stages is difficult, since the first sympt"
+              "excerpt": "Enrollment: 116",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             }
           ]
         },
         {
           "enrollment_bucket": "< 50",
-          "count": 588,
+          "count": 1323,
           "citations": [
             {
               "nct_id": "NCT00711529",
-              "excerpt": "Premenopausal women with breast cancer who receive endocrine therapy (e.g. tamoxifen) and/or chemotherapy are at risk for experiencing premature menopause because of their treatment. The resulting sym"
+              "excerpt": "Enrollment: 27",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             },
             {
               "nct_id": "NCT00688766",
-              "excerpt": "IPI-504-06 is a Phase 3, randomized, double-blind, placebo-controlled, multi-center study to evaluate the efficacy and safety of IPI-504 as compared to placebo in patients with metastatic and/or unres"
+              "excerpt": "Enrollment: 47",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             },
             {
               "nct_id": "NCT01830101",
-              "excerpt": "The investigators hope to improve overall median survival of patients with recurrent Glioblastoma by investigating continuous low-dose daily Temozolomide plus or minus five treatments of re-irradiatio"
+              "excerpt": "Enrollment: 0",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             }
           ]
         },
         {
           "enrollment_bucket": "1,000–4,999",
-          "count": 393,
+          "count": 857,
           "citations": [
             {
               "nct_id": "NCT05687266",
-              "excerpt": "This is a Phase III, randomized, open-label, multicenter, global study to compare the efficacy and safety of Datopotamab Deruxtecan (Dato-DXd) in combination with durvalumab and carboplatin compared w"
+              "excerpt": "Enrollment: 1350",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             },
             {
               "nct_id": "NCT03120949",
-              "excerpt": "The primary objective of this study was to evaluate the long-term safety and tolerability of olokizumab (OKZ) 64 mg administered subcutaneously (SC) once every 2 weeks (q2w) or once every 4 weeks (q4w"
+              "excerpt": "Enrollment: 2106",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             },
             {
               "nct_id": "NCT05929768",
-              "excerpt": "This phase III trial compares the effects of shorter chemotherapy (chemo)-immunotherapy without anthracyclines to usual chemo-immunotherapy for the treatment of early-stage triple negative breast canc"
+              "excerpt": "Enrollment: 2400",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             }
           ]
         },
         {
           "enrollment_bucket": "Unknown",
-          "count": 102,
+          "count": 231,
           "citations": [
             {
               "nct_id": "NCT00005979",
-              "excerpt": "RATIONALE: Drugs used in chemotherapy use different ways to stop tumor cells from dividing so they stop growing or die. Combining more than one drug may kill more tumor cells. It is not yet known if c"
+              "excerpt": "Enrollment: unknown",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             },
             {
               "nct_id": "NCT00004199",
-              "excerpt": "RATIONALE: Prinomastat may stop the growth of non-small cell lung cancer by stopping blood flow to the tumor. Drugs used in chemotherapy stop tumor cells from dividing so they stop growing or die.\n\nPU"
+              "excerpt": "Enrollment: unknown",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             },
             {
               "nct_id": "NCT00072020",
-              "excerpt": "RATIONALE: Zoledronate may delay or prevent the formation of bone metastases. It is not yet known whether chemotherapy and/or hormone therapy are more effective with or without zoledronate in preventi"
+              "excerpt": "Enrollment: unknown",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             }
           ]
         },
         {
           "enrollment_bucket": "5,000+",
-          "count": 49,
+          "count": 94,
           "citations": [
             {
               "nct_id": "NCT00687349",
-              "excerpt": "This research study is a randomized trial to evaluate a training program that is designed to improve the communication skills of clinicians. The training program focuses on care for patients with seri"
+              "excerpt": "Enrollment: 6086",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             },
             {
               "nct_id": "NCT05285826",
-              "excerpt": "This study will evaluate the efficacy, immunogenicity, and safety of 9-valent human papillomavirus (9vHPV; V503) vaccine in Chinese men 20 to 45 years of age. It will enroll heterosexual men (HM) and "
+              "excerpt": "Enrollment: 8100",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             },
             {
               "nct_id": "NCT00123760",
-              "excerpt": "Positron Emission Tomography (PET) is a specialised nuclear medicine procedure that uses positron emitting radiolabeled tracer molecules to measure biological activity. The most common of these radiol"
+              "excerpt": "Enrollment: 10838",
+              "source_field": "protocolSection.designModule.enrollmentInfo.count"
             }
           ]
         }
@@ -146,10 +164,11 @@
       "time_granularity": null,
       "truncated": true,
       "count_verified": false,
+      "counts_exact": true,
       "count_server": 10846,
       "query_interpretation": "Grouped 5,000 fetched studies by 'enrollment_bucket'",
       "warnings": [
-        "Results truncated: 5,000 of 10,846 studies fetched. Aggregation reflects fetched subset."
+        "Bar counts are exact server-side totals over all 10,846 studies; citation excerpts are sampled from 5,000 fetched records."
       ]
     }
   }

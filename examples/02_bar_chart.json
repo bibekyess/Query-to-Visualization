@@ -10,7 +10,7 @@
   "response": {
     "visualization": {
       "type": "bar_chart",
-      "title": "Diabetes Trials Distribution Across Phases",
+      "title": "Distribution of Diabetes Trials Across Phases",
       "encoding": {
         "x": {
           "field": "phase"
@@ -22,109 +22,127 @@
       "data": [
         {
           "phase": "N/A",
-          "count": 3149,
+          "count": 9942,
           "citations": [
             {
               "nct_id": "NCT04568486",
-              "excerpt": "This study seeks to describe and evaluate the impact of social support on self-care and clinical outcomes in rural-dwelling older adults with T2DM, test the feasibility and preliminary effectiveness o"
+              "excerpt": "NA",
+              "source_field": "protocolSection.designModule.phases"
             },
             {
               "nct_id": "NCT05265741",
-              "excerpt": "The purpose of the trial is to discover and predict the development of GDM of pregnant women in their first trimester."
+              "excerpt": "NA",
+              "source_field": "protocolSection.designModule.phases"
             },
             {
               "nct_id": "NCT05764629",
-              "excerpt": "To explore the risk factors influencing glycemic status, optimized treatment, and prognosis of post-chronic pancreatitis diabetes mellitus (PPDM-C)."
+              "excerpt": "NA",
+              "source_field": "protocolSection.designModule.phases"
             }
           ]
         },
         {
           "phase": "Phase 2",
-          "count": 536,
+          "count": 2585,
           "citations": [
             {
               "nct_id": "NCT00446251",
-              "excerpt": "This is a 12-month phase 2, prospective, open label study to evaluate the effect of rituximab with mycophenolate mofetil (MMF)on the PRA of 14 highly sensitized patients who just completed an 8 month "
+              "excerpt": "PHASE2",
+              "source_field": "protocolSection.designModule.phases"
             },
             {
               "nct_id": "NCT00608439",
-              "excerpt": "The purpose of this protocol is to investigate the safety, tolerability and effectiveness of CAST as a treatment for diabetic neuropathy. The primary outcome measure will be Total Neuropathic Symptom "
+              "excerpt": "PHASE2",
+              "source_field": "protocolSection.designModule.phases"
             },
             {
               "nct_id": "NCT01519102",
-              "excerpt": "Closed-loop strategy is composed of three components: glucose sensor to read glucose levels, insulin pump to infuse insulin and a dosing mathematical algorithm to decide on the required insulin dosage"
+              "excerpt": "PHASE2",
+              "source_field": "protocolSection.designModule.phases"
             }
           ]
         },
         {
           "phase": "Phase 3",
-          "count": 497,
+          "count": 2446,
           "citations": [
             {
               "nct_id": "NCT02229227",
-              "excerpt": "This Phase IIIb, randomized, open-label, parallel group, active control, multicenter, treat to-target study of 26 weeks' treatment duration will evaluate the efficacy and safety of once-weekly albiglu"
+              "excerpt": "PHASE3",
+              "source_field": "protocolSection.designModule.phases"
             },
             {
               "nct_id": "NCT02477969",
-              "excerpt": "This is a multicenter, randomized, double-blind, placebo-controlled, phase III clinical study that will enroll approximately 564 T2DM patients who before screening have inadequately controlled blood g"
+              "excerpt": "PHASE3",
+              "source_field": "protocolSection.designModule.phases"
             },
             {
               "nct_id": "NCT04083339",
-              "excerpt": "This is a multicenter, randomized, placebo-controlled, 2-part study to evaluate the safety and efficacy of AT-001 in adult patients (N=675) with Diabetic Cardiomyopathy at high risk of progression to "
+              "excerpt": "PHASE3",
+              "source_field": "protocolSection.designModule.phases"
             }
           ]
         },
         {
           "phase": "Phase 1",
-          "count": 477,
+          "count": 2217,
           "citations": [
             {
               "nct_id": "NCT00730275",
-              "excerpt": "This study will assess the safety, tolerability and pharmacokinetics of sitagliptin in 10 to 17 year old diabetic patients."
+              "excerpt": "PHASE1",
+              "source_field": "protocolSection.designModule.phases"
             },
             {
               "nct_id": "NCT05363761",
-              "excerpt": "This study is assess the safety and performance of the Neurotronic Infusion catheter for treatment of patients with Type 2 Diabetes (T2DM) and hypertension."
+              "excerpt": "PHASE1",
+              "source_field": "protocolSection.designModule.phases"
             },
             {
               "nct_id": "NCT07634770",
-              "excerpt": "Reason for the study The participants have been diagnosed with type 1 diabetes and are being treated with standard insulin therapy.\n\nThe sponsor of the study is developing a new insulin-based medicine"
+              "excerpt": "PHASE1",
+              "source_field": "protocolSection.designModule.phases"
             }
           ]
         },
         {
           "phase": "Phase 4",
-          "count": 456,
+          "count": 2208,
           "citations": [
             {
               "nct_id": "NCT03470961",
-              "excerpt": "A single-centre, prospective, observational study to evaluate the safety and efficacy of Polyclonal Antibodies in simultaneous Pancreas Kidney Transplant recipients."
+              "excerpt": "PHASE4",
+              "source_field": "protocolSection.designModule.phases"
             },
             {
               "nct_id": "NCT06475586",
-              "excerpt": "The use of semaglutide in patients with DMT2 and psoriasis contributes to improving the clinical picture of psoriasis and reducing the inflammatory response"
+              "excerpt": "PHASE4",
+              "source_field": "protocolSection.designModule.phases"
             },
             {
               "nct_id": "NCT02046395",
-              "excerpt": "The purpose of this study is to study the effect of blocking the renin angiotensin system on urinary free light chain excretion as compared to urine microalbumin creatinine ratio in subjects with type"
+              "excerpt": "PHASE4",
+              "source_field": "protocolSection.designModule.phases"
             }
           ]
         },
         {
           "phase": "Early Phase 1",
-          "count": 38,
+          "count": 209,
           "citations": [
             {
               "nct_id": "NCT02704494",
-              "excerpt": "The aim of this study is to evaluate the safety and effects of resveratrol in treatment of diabetic nephropathy."
+              "excerpt": "EARLY_PHASE1",
+              "source_field": "protocolSection.designModule.phases"
             },
             {
               "nct_id": "NCT07655076",
-              "excerpt": "This research study is testing an investigational dual-port insulin patch pump that integrates a continuous glucose monitor (CGM) in adults with type 1 diabetes. The goal of the study is to better und"
+              "excerpt": "EARLY_PHASE1",
+              "source_field": "protocolSection.designModule.phases"
             },
             {
               "nct_id": "NCT05037591",
-              "excerpt": "Doses of 150 mg/kg BW (30 mg/200g BW) sea grape extract in a previous pre-clinical trial, showed that it could improve blood glucose, total cholesterol and serum PGC-1 levels in rats fed a diet high i"
+              "excerpt": "EARLY_PHASE1",
+              "source_field": "protocolSection.designModule.phases"
             }
           ]
         }
@@ -142,10 +160,11 @@
       "time_granularity": null,
       "truncated": true,
       "count_verified": false,
+      "counts_exact": true,
       "count_server": 23959,
       "query_interpretation": "Grouped 5,000 fetched studies by 'phase'",
       "warnings": [
-        "Results truncated: 5,000 of 23,959 studies fetched. Aggregation reflects fetched subset."
+        "Bar counts are exact server-side totals over all 23,959 studies; citation excerpts are sampled from 5,000 fetched records."
       ]
     }
   }

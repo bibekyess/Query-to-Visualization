@@ -38,9 +38,9 @@ a network with 0 edges. Do not build more than 3 networks.
 ## Choosing `viz_hint` for `finalize_visualization`
 - Time trend → "time_series"
 - Enrollment size distribution → "histogram"
-- 2-variable comparison → "scatter"
-- Relationship network → "network_graph"
 - Default distribution → omit (system chooses bar_chart)
+(Networks are set automatically by build_network; time/enrollment fields are
+auto-detected even if you omit the hint.)
 
 ## Encoding rules
 The `encoding` dict maps visual channels to field names in the data:

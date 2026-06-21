@@ -1,11 +1,26 @@
 """Tool 3: build_network — build a co-occurrence network from fetched studies."""
 from __future__ import annotations
 
+import re
 import uuid
 from collections import Counter
 
 from app.clinicaltrials import extractors as ct
 from app.tools.store import DATASETS, NET_RESULTS
+
+
+def _norm_key(label: str) -> str:
+    """
+    Collapse spelling variants of the same entity to one key.
+
+    Condition/intervention names arrive with inconsistent casing, hyphenation and
+    punctuation (e.g. "Non-small Cell Lung Cancer", "Non Small Cell Lung Cancer",
+    "Non-Small Cell Lung Cancer"). Lowercasing and reducing every run of
+    non-alphanumeric characters to a single space merges those into one node so
+    the graph isn't fragmented across near-duplicates. (This is deliberately
+    conservative — it won't merge true synonyms with different word order.)
+    """
+    return re.sub(r"[^a-z0-9]+", " ", label.lower()).strip()
 
 
 def _network_entities(study: dict, node_type: str) -> list[str]:
@@ -34,27 +49,40 @@ def build_network(
         return {"error": f"Dataset {dataset_id!r} not found. Call search_trials first."}
 
     studies = DATASETS[dataset_id]
-    node_counts: Counter[str] = Counter()
+    node_counts: Counter[str] = Counter()           # normalized key → studies mentioning it
     edge_counts: Counter[tuple[str, str]] = Counter()
+    # For each normalized key, track how often each original spelling appears so we can
+    # show the most common human-readable label rather than the normalized form.
+    display: dict[str, Counter[str]] = {}
 
     for study in studies:
-        # Deduplicate within a study (a study shouldn't create self-loops or duplicate edges).
-        # Cap at 10 to prevent combinatorial explosion on studies with many entities
+        # Normalize then deduplicate within a study, so spelling variants don't create
+        # self-loops or duplicate edges. Cap at 10 to bound the pair explosion
         # (10 entities → at most 45 pairs; without the cap one study could generate thousands).
-        entities = list(set(_network_entities(study, node_type)))[:10]
-        for e in entities:
-            node_counts[e] += 1
-        for i in range(len(entities)):
-            for j in range(i + 1, len(entities)):
-                # Sort the pair so (A, B) and (B, A) map to the same counter key.
-                a, b = sorted([entities[i], entities[j]])
+        keys: list[str] = []
+        for raw in _network_entities(study, node_type):
+            key = _norm_key(raw)
+            if not key or key in keys:
+                continue
+            keys.append(key)
+            display.setdefault(key, Counter())[raw] += 1
+        keys = keys[:10]
+        for k in keys:
+            node_counts[k] += 1
+        for i in range(len(keys)):
+            for j in range(i + 1, len(keys)):
+                a, b = sorted([keys[i], keys[j]])   # canonical key order for the edge
                 edge_counts[(a, b)] += 1
+
+    def _label(key: str) -> str:
+        return display[key].most_common(1)[0][0]
 
     # Keep only the most-mentioned nodes; everything else would be noise in a visualisation.
     top_nodes = [n for n, _ in node_counts.most_common(top_n)]
     top_set = set(top_nodes)
 
-    nodes = [{"id": n, "label": n, "weight": node_counts[n]} for n in top_nodes]
+    # id = normalized key (stable, what edges reference); label = prettiest original spelling.
+    nodes = [{"id": n, "label": _label(n), "weight": node_counts[n]} for n in top_nodes]
     # Keep only edges whose both endpoints made the top-N cut, then cap total edges.
     edges = [
         {"source": a, "target": b, "weight": w}
