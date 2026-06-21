@@ -5,7 +5,12 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.agent import run_agent
+from app.logging_config import configure_logging
 from app.models import QueryRequest, VisualizationResponse
+
+# Configure structlog before anything logs, so every record is rendered/gated
+# consistently for the lifetime of the process.
+configure_logging()
 
 app = FastAPI(
     title="ClinicalTrials.gov Query-to-Visualization Agent",

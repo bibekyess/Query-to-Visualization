@@ -14,12 +14,16 @@ from __future__ import annotations
 import json
 from typing import Any
 
+import structlog
+
 from app.agent.registry import TOOL_FNS
 from app.agent.tool_schemas import TOOLS
 from app.config import get_settings
 from app.llm import provider
 from app.models import QueryRequest, VisualizationResponse
 from app.prompts import SYSTEM_PROMPT
+
+log = structlog.get_logger(__name__)
 
 
 def run_agent(request: QueryRequest) -> VisualizationResponse:
@@ -39,7 +43,9 @@ def run_agent(request: QueryRequest) -> VisualizationResponse:
     ]
 
     max_turns = get_settings().agent_max_turns
+    log.info("agent.start", query=request.query, filters=filters, max_turns=max_turns)
     for _turn in range(max_turns):
+        log.info("agent.turn", turn=_turn + 1, max_turns=max_turns)
         message = provider.complete(messages, TOOLS)
         # Append the assistant message first — OpenAI requires tool results to follow
         # the assistant message that issued the tool calls.
@@ -55,6 +61,7 @@ def run_agent(request: QueryRequest) -> VisualizationResponse:
             fn_args = json.loads(tc.function.arguments)
             fn = TOOL_FNS.get(fn_name)
 
+            log.info("tool.call", name=fn_name, arguments=fn_args)
             if fn is None:
                 tool_result: Any = {"error": f"Unknown tool: {fn_name}"}
             else:

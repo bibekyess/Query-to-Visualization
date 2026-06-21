@@ -12,6 +12,8 @@ dependencies = [
     "pydantic>=2.7.0",
     "pydantic-settings>=2.14.2",
     "aiofiles>=25.1.0",
+    "structlog>=26.1.0",
+    "tzdata>=2026.2",
 ]
 
 [build-system]

@@ -35,6 +35,14 @@ class Settings(BaseSettings):
     # --- Agent loop ---
     agent_max_turns: int = 12            # safety bound on tool-calling iterations
 
+    # --- Logging ---
+    # debug -> human-readable ConsoleRenderer; otherwise machine-readable JSON.
+    # log_level gates which records are emitted (DEBUG/INFO/WARNING/ERROR).
+    # log_timezone controls the timestamp timezone on every log line.
+    debug: bool = True
+    log_level: str = "INFO"
+    log_timezone: str = "Asia/Seoul"
+
 
 @lru_cache
 def get_settings() -> Settings:
