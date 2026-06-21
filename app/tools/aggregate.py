@@ -131,23 +131,20 @@ def _study_groups(study: dict, group_by: str) -> list[str]:
     return ["Unknown"]
 
 
-def aggregate(
-    dataset_id: str,
+def _compute(
+    studies: list[dict],
+    meta: dict,
     group_by: str,
-    top_n: int = 20,
-) -> dict:
+    top_n: int,
+) -> tuple[list[tuple[str, int]], dict[str, list[dict]], bool]:
     """
-    Group fetched studies by a field and count them.
+    Core per-dataset aggregation, shared by aggregate() and aggregate_comparison().
 
-    Critically, this returns only group LABELS to the LLM — not the counts.
-    The counts are stored in AGG_RESULTS and only retrieved in finalize_visualization.
-    This prevents the LLM from ever writing numeric data into the output.
+    Returns (sorted_groups, citations_map, counts_exact):
+      - sorted_groups: [(label, count), ...] top_n by count, descending
+      - citations_map: label → list of per-bucket citations (from the fetched sample)
+      - counts_exact:  True when the bar values are server-authoritative
     """
-    if dataset_id not in DATASETS:
-        return {"error": f"Dataset {dataset_id!r} not found. Call search_trials first."}
-
-    studies = DATASETS[dataset_id]
-    meta = DATASET_META.get(dataset_id, {})
     total_count: int = meta.get("total_count", len(studies))
     fetched_count: int = meta.get("fetched_count", len(studies))
     truncated = total_count > fetched_count
@@ -175,6 +172,28 @@ def aggregate(
             counts_exact = True
 
     sorted_groups = sorted(counts.items(), key=lambda x: x[1], reverse=True)[:top_n]
+    return sorted_groups, citations_map, counts_exact
+
+
+def aggregate(
+    dataset_id: str,
+    group_by: str,
+    top_n: int = 20,
+) -> dict:
+    """
+    Group fetched studies by a field and count them.
+
+    Critically, this returns only group LABELS to the LLM — not the counts.
+    The counts are stored in AGG_RESULTS and only retrieved in finalize_visualization.
+    This prevents the LLM from ever writing numeric data into the output.
+    """
+    if dataset_id not in DATASETS:
+        return {"error": f"Dataset {dataset_id!r} not found. Call search_trials first."}
+
+    meta = DATASET_META.get(dataset_id, {})
+    sorted_groups, citations_map, counts_exact = _compute(
+        DATASETS[dataset_id], meta, group_by, top_n
+    )
 
     # Store the full bucketed data (including counts) server-side, keyed by result_id.
     # The LLM only receives the label list; numbers never enter the LLM context.
@@ -195,4 +214,81 @@ def aggregate(
         "result_id": result_id,
         "groups": [g for g, _ in sorted_groups],   # labels only, no counts
         "num_groups": len(sorted_groups),
+    }
+
+
+def aggregate_comparison(
+    series: list[dict],
+    group_by: str,
+    top_n: int = 20,
+) -> dict:
+    """
+    Compare two or more datasets side by side on a shared `group_by` field
+    (e.g. "Drug A vs Drug B by phase"). Each `series` entry is
+    {"dataset_id", "label"}; `label` is the human-readable series name.
+
+    Produces LONG-format rows {group_by, "series", "count", "citations"} — one row
+    per (group, series) — which finalize renders as a grouped_bar (or multi-series
+    time_series for date fields). Series labels are language supplied by the
+    caller; counts and citations stay in Python, so the invariant holds.
+    """
+    if not series or len(series) < 2:
+        return {"error": "aggregate_comparison needs at least 2 series."}
+
+    per_series: list[tuple[str, dict[str, int], dict[str, list[dict]], bool]] = []
+    total_count = 0
+    fetched_count = 0
+    filters: list[dict] = []
+    for s in series:
+        ds = s.get("dataset_id")
+        label = s.get("label") or ds
+        if ds not in DATASETS:
+            return {"error": f"Dataset {ds!r} not found. Call search_trials first."}
+        meta = DATASET_META.get(ds, {})
+        # Aggregate each series fully (no per-series cap) so the global top-N ranking is fair.
+        sorted_groups, citations_map, exact = _compute(DATASETS[ds], meta, group_by, top_n=10_000)
+        per_series.append((label, dict(sorted_groups), citations_map, exact))
+        total_count += meta.get("total_count", 0)
+        fetched_count += meta.get("fetched_count", 0)
+        filters.append({"label": label, "query": meta.get("query_params", {})})
+
+    # Global top group labels by summed count across all series, so every series
+    # shows the same x-axis groups (bars align; missing combos get count 0).
+    totals: dict[str, int] = defaultdict(int)
+    for _, counts, _, _ in per_series:
+        for g, c in counts.items():
+            totals[g] += c
+    top_groups = [g for g, _ in sorted(totals.items(), key=lambda x: x[1], reverse=True)[:top_n]]
+
+    counts_exact = all(exact for *_, exact in per_series)
+
+    data = [
+        {
+            group_by: g,
+            "series": label,
+            "count": counts.get(g, 0),
+            "citations": citations_map.get(g, []),
+        }
+        for g in top_groups
+        for label, counts, citations_map, _ in per_series
+    ]
+
+    result_id = str(uuid.uuid4())
+    AGG_RESULTS[result_id] = {
+        "data": data,
+        "group_by": group_by,
+        "dataset_id": series[0].get("dataset_id"),
+        "counts_exact": counts_exact,
+        "grouped": True,
+        "series_field": "series",
+        "total_count": total_count,
+        "fetched_count": fetched_count,
+        "filters": {"comparison": filters},
+    }
+
+    return {
+        "result_id": result_id,
+        "groups": top_groups,
+        "series": [label for label, *_ in per_series],   # labels only, no counts
+        "num_groups": len(top_groups),
     }

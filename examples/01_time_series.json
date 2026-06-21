@@ -11,7 +11,7 @@
   "response": {
     "visualization": {
       "type": "time_series",
-      "title": "Number of Pembrolizumab Trials per Year Since 2015",
+      "title": "Number of Pembrolizumab Trials Per Year Since 2015",
       "encoding": {
         "x": {
           "field": "start_year"
@@ -298,6 +298,7 @@
         "source": "clinicaltrials.gov"
       }
     },
+    "message": null,
     "response_metadata": {
       "total_count": 2819,
       "fetched_count": 2819,

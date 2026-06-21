@@ -83,6 +83,24 @@ QUERIES = [
             },
         },
     },
+    {
+        "name": "07_comparison_grouped_bar",
+        "description": "Pembrolizumab vs nivolumab phase distribution (grouped_bar)",
+        "body": {
+            "query": "Compare the phase distribution of pembrolizumab and nivolumab trials.",
+        },
+    },
+    {
+        "name": "08_scatter",
+        "description": "Enrollment vs trial duration for Phase 3 cancer trials (scatter)",
+        "body": {
+            "query": "Plot enrollment against trial duration for Phase 3 cancer trials.",
+            "filters": {
+                "condition": "cancer",
+                "phase": ["PHASE3"],
+            },
+        },
+    },
 ]
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -136,8 +154,13 @@ def run_query(index: int, example: dict) -> bool:
     out_path = EXAMPLES_DIR / f"{name}.json"
     out_path.write_text(json.dumps(output, indent=2, ensure_ascii=False), encoding="utf-8")
 
-    viz = data.get("visualization", {})
+    viz = data.get("visualization") or {}
     meta = data.get("response_metadata", {})
+    if not viz:
+        # "no data" notice path — no chart, just a message.
+        print(f"  OK  notice: {data.get('message')}")
+        print(f"     saved -> {out_path.relative_to(Path.cwd())}")
+        return True
     print(f"  OK  type={viz.get('type')}  "
           f"data_points={len(viz.get('data') or viz.get('nodes') or [])}  "
           f"fetched={meta.get('fetched_count')}  "

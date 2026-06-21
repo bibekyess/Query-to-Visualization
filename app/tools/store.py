@@ -12,3 +12,4 @@ DATASETS: dict[str, list[dict]] = {}     # dataset_id → raw study dicts from t
 DATASET_META: dict[str, dict] = {}       # dataset_id → total_count, fetched_count, query_params
 AGG_RESULTS: dict[str, dict] = {}        # result_id → bucketed data + citations
 NET_RESULTS: dict[str, dict] = {}        # result_id → graph nodes + edges
+SCATTER_RESULTS: dict[str, dict] = {}    # result_id → (x, y) points + citations

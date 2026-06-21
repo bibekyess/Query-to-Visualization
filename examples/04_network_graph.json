@@ -10,7 +10,7 @@
   "response": {
     "visualization": {
       "type": "network_graph",
-      "title": "Network of Co-occurring Conditions in Lung Cancer Trials",
+      "title": "Network of Conditions Co-Occurring in Lung Cancer Trials",
       "encoding": {
         "nodes": {
           "field": "condition",
@@ -905,6 +905,7 @@
         "source": "clinicaltrials.gov"
       }
     },
+    "message": null,
     "response_metadata": {
       "total_count": 14266,
       "fetched_count": 5000,

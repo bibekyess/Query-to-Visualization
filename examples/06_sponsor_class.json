@@ -180,6 +180,7 @@
         "source": "clinicaltrials.gov"
       }
     },
+    "message": null,
     "response_metadata": {
       "total_count": 66623,
       "fetched_count": 5000,

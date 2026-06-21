@@ -19,10 +19,15 @@ _CONTINUOUS_FIELDS = {"enrollment_bucket"}
 _VALID_TYPES = {"bar_chart", "time_series", "histogram"}
 
 
-def select(group_by: str, viz_hint: str | None) -> str:
+def select(group_by: str, viz_hint: str | None, grouped: bool = False) -> str:
     # Network intent always wins — build_network already chose this path, never override it.
     if viz_hint == "network_graph":
         return "network_graph"
+
+    # Comparison (multi-series) data: a multi-series line for time fields, else grouped bars.
+    # grouped_bar is reachable ONLY here, never from a viz_hint.
+    if grouped:
+        return "time_series" if group_by in _TIME_FIELDS else "grouped_bar"
 
     # Time fields have inherent ordering; a line chart communicates that better than bars.
     if group_by in _TIME_FIELDS:

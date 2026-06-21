@@ -43,8 +43,33 @@ function toVegaLite(viz) {
   const { type, title, encoding, data } = viz;
   const mark = TYPE_TO_MARK[type] ?? 'bar';
 
+  // Scatter rows store coordinates under literal "x"/"y" keys (one point per trial);
+  // the real field names live in `encoding` and are used only as axis titles.
+  if (type === 'scatter') {
+    const xTitle = encoding.x?.field ?? 'x';
+    const yTitle = encoding.y?.field ?? 'y';
+    return {
+      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+      title,
+      mark: { type: 'point', filled: true, opacity: 0.6 },
+      data: { values: data },
+      encoding: {
+        x: { field: 'x', type: 'quantitative', title: xTitle },
+        y: { field: 'y', type: 'quantitative', title: yTitle },
+        tooltip: [
+          { field: 'nct_id', type: 'nominal', title: 'Trial' },
+          { field: 'x', type: 'quantitative', title: xTitle },
+          { field: 'y', type: 'quantitative', title: yTitle },
+        ],
+      },
+      width: 'container',
+      height: 380,
+    };
+  }
+
   const xField = encoding.x?.field;
   const yField = encoding.y?.field ?? 'count';
+  const seriesField = encoding.series?.field;
   const firstRow = data[0] ?? {};
   // Detect quantitative vs ordinal from the actual data value
   const xType = typeof firstRow[xField] === 'number' ? 'quantitative' : 'ordinal';
@@ -67,9 +92,15 @@ function toVegaLite(viz) {
     ],
   };
 
-  // Scatter: size bubbles by the count field
-  if (type === 'scatter') {
-    enc.size = { field: yField, type: 'quantitative' };
+  // Comparison data carries a series dimension: color splits the series, and for a
+  // grouped bar xOffset places the bars side by side (for multi-series lines, color
+  // alone draws one line per series).
+  if (seriesField) {
+    enc.color = { field: seriesField, type: 'nominal', title: seriesField };
+    if (type === 'grouped_bar') {
+      enc.xOffset = { field: seriesField, type: 'nominal' };
+    }
+    enc.tooltip.push({ field: seriesField, type: 'nominal' });
   }
 
   return {
@@ -131,10 +162,10 @@ function showCitations(datum) {
   const citations = datum.citations;
   if (!citations || citations.length === 0) return;
 
-  // Find the label for this datum (first non-count, non-citations key)
-  const skip = new Set(['count', 'citations']);
+  // Scatter points identify by trial; categorical data by its first label field.
+  const skip = new Set(['count', 'citations', 'x', 'y', 'nct_id']);
   const labelKey = Object.keys(datum).find((k) => !skip.has(k) && !k.startsWith('_'));
-  const label = labelKey ? datum[labelKey] : 'selected point';
+  const label = datum.nct_id ?? (labelKey ? datum[labelKey] : 'selected point');
 
   document.getElementById('citations-title').textContent =
     `${citations.length} citation${citations.length > 1 ? 's' : ''} for "${label}"`;
@@ -161,7 +192,7 @@ function hideCitations() {
 // ── Main render dispatcher ─────────────────────────────────────────────────────
 
 async function render(vizResponse) {
-  const { visualization: viz, response_metadata: meta } = vizResponse;
+  const { visualization: viz, response_metadata: meta, message } = vizResponse;
 
   const placeholder = document.getElementById('placeholder');
   const chart = document.getElementById('chart');
@@ -174,6 +205,16 @@ async function render(vizResponse) {
   chart.innerHTML = '';
   hideCitations();
   document.getElementById('citations-hint').style.display = 'none';
+
+  // "No data" notice: the backend returns no visualization, only a message.
+  if (!viz) {
+    document.getElementById('chart-title').textContent = 'No matching trials';
+    placeholder.querySelector('span').textContent =
+      message || 'No clinical trials matched this query.';
+    placeholder.style.display = 'flex';
+    showMetadata(meta);
+    return;
+  }
 
   document.getElementById('chart-title').textContent = viz.title ?? '';
 

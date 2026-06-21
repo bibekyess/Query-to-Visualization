@@ -6,6 +6,7 @@ _get() is a safe path-traversal helper so we never get KeyError on missing field
 """
 from __future__ import annotations
 
+from datetime import date
 from typing import Any
 
 
@@ -83,6 +84,36 @@ def extract_enrollment(s: dict) -> int | None:
         return int(count) if count is not None else None
     except (ValueError, TypeError):
         return None
+
+
+def _parse_partial_date(value: str | None) -> date | None:
+    # Dates come as "YYYY", "YYYY-MM", or "YYYY-MM-DD"; fill missing month/day with 1.
+    if not value:
+        return None
+    parts = value.split("-")
+    try:
+        year = int(parts[0])
+        month = int(parts[1]) if len(parts) > 1 else 1
+        day = int(parts[2]) if len(parts) > 2 else 1
+        return date(year, month, day)
+    except (ValueError, IndexError):
+        return None
+
+
+def extract_duration_days(s: dict) -> int | None:
+    # Trial duration = completion date − start date, in days. Returns None when either
+    # date is missing/unparseable, or when completion precedes start (bad data).
+    start = _parse_partial_date(extract_start_date(s))
+    end = _parse_partial_date(extract_completion_date(s))
+    if start is None or end is None:
+        return None
+    delta = (end - start).days
+    return delta if delta >= 0 else None
+
+
+def extract_start_year(s: dict) -> int | None:
+    d = extract_start_date(s)
+    return int(d[:4]) if d and len(d) >= 4 and d[:4].isdigit() else None
 
 
 def extract_brief_summary(s: dict) -> str:

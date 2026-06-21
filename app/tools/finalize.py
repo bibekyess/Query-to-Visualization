@@ -10,7 +10,7 @@ from app.models import (
     Visualization,
     VisualizationResponse,
 )
-from app.tools.store import AGG_RESULTS, DATASET_META, NET_RESULTS
+from app.tools.store import AGG_RESULTS, DATASET_META, NET_RESULTS, SCATTER_RESULTS
 from app.viz import select as select_viz_type
 
 
@@ -31,7 +31,27 @@ def finalize_visualization(
         return _finalize_agg(result_id, title, encoding, viz_hint)
     if result_id in NET_RESULTS:
         return _finalize_network(result_id, title, encoding)
-    return {"error": f"Result {result_id!r} not found. Check result_id from aggregate or build_network."}
+    if result_id in SCATTER_RESULTS:
+        return _finalize_scatter(result_id, title)
+    return {"error": f"Result {result_id!r} not found. Check result_id from a prior tool call."}
+
+
+def finalize_notice(message: str) -> VisualizationResponse:
+    """
+    Terminal "no data" response: returned when no search produced any matching
+    trials, so there is genuinely nothing to chart. Carries no visualization —
+    only a human-readable message. The agent loop gates this so it can only be
+    honored when no dataset has results (a chartable query is never declined).
+    """
+    return VisualizationResponse(
+        visualization=None,
+        message=message,
+        response_metadata=ResponseMetadata(
+            total_count=0,
+            fetched_count=0,
+            query_interpretation=message,
+        ),
+    )
 
 
 def _finalize_agg(
@@ -40,12 +60,14 @@ def _finalize_agg(
     result = AGG_RESULTS[result_id]
     data = result["data"]
     group_by: str = result["group_by"]
+    grouped: bool = result.get("grouped", False)
     meta = DATASET_META.get(result["dataset_id"], {})
 
-    viz_type = select_viz_type(group_by, viz_hint)
+    viz_type = select_viz_type(group_by, viz_hint, grouped=grouped)
 
     # Time-series data must be in chronological order for a line chart to make sense.
     # ISO date strings (YYYY or YYYY-MM) sort correctly with plain string comparison.
+    # (sorted() is stable, so for grouped data the per-x series order is preserved.)
     time_granularity: str | None = None
     if group_by == "start_month":
         time_granularity = "month"
@@ -59,20 +81,38 @@ def _finalize_agg(
     y_field = encoding.get("y") or "count"
 
     enc: dict[str, Any] = {"x": {"field": x_field}, "y": {"field": y_field}}
-    if "series" in encoding:
+    if grouped:
+        # The series channel is set deterministically from the stored result, not the LLM.
+        enc["series"] = {"field": result["series_field"]}
+    elif "series" in encoding:
         enc["series"] = {"field": encoding["series"]}
 
-    total_count = meta.get("total_count", 0)
-    fetched_count = meta.get("fetched_count", 0)
+    # For a comparison the totals are the summed corpus across series, stored on the result;
+    # for a single aggregate they come from the dataset metadata.
+    if grouped:
+        total_count = result.get("total_count", 0)
+        fetched_count = result.get("fetched_count", 0)
+        filters = dict(result.get("filters", {}))
+    else:
+        total_count = meta.get("total_count", 0)
+        fetched_count = meta.get("fetched_count", 0)
+        # Expose the query params that were actually sent to the API so the response is auditable.
+        filters = {k: v for k, v in (meta.get("query_params") or {}).items()}
     # count_verified = True only when we fetched every record (no truncation).
     count_verified = total_count == fetched_count
     # counts_exact = bar values are server-authoritative even if records were truncated
     # (computed via per-group countTotal queries). Set by aggregate().
     counts_exact = result.get("counts_exact", count_verified)
 
-    # Expose the query params that were actually sent to the API so the response is auditable.
-    filters = {k: v for k, v in (meta.get("query_params") or {}).items()}
     filters["source"] = "clinicaltrials.gov"
+
+    if grouped:
+        n_series = len({d["series"] for d in data})
+        interpretation = (
+            f"Compared {n_series} series by {group_by!r} across {fetched_count:,} fetched studies"
+        )
+    else:
+        interpretation = f"Grouped {fetched_count:,} fetched studies by {group_by!r}"
 
     warnings: list[str] = []
     if total_count > fetched_count and counts_exact:
@@ -106,7 +146,7 @@ def _finalize_agg(
             count_verified=count_verified,
             counts_exact=counts_exact,
             count_server=total_count if not count_verified else None,
-            query_interpretation=f"Grouped {fetched_count:,} fetched studies by {group_by!r}",
+            query_interpretation=interpretation,
             warnings=warnings,
         ),
     )
@@ -157,6 +197,52 @@ def _finalize_network(
             query_interpretation=(
                 f"Co-occurrence network of {node_type}s across {fetched:,} studies"
             ),
+            warnings=warnings,
+        ),
+    )
+
+
+def _finalize_scatter(result_id: str, title: str) -> VisualizationResponse:
+    result = SCATTER_RESULTS[result_id]
+    meta = DATASET_META.get(result["dataset_id"], {})
+    x_field: str = result["x_field"]
+    y_field: str = result["y_field"]
+    points = result["points"]
+
+    total_count = meta.get("total_count", 0)
+    fetched_count = meta.get("fetched_count", 0)
+    count_verified = total_count == fetched_count
+
+    filters = {k: v for k, v in (meta.get("query_params") or {}).items()}
+    filters["source"] = "clinicaltrials.gov"
+
+    warnings: list[str] = []
+    if result.get("truncated"):
+        warnings.append(
+            f"Scatter capped to {len(points):,} of {result['total_points']:,} points "
+            "with both values present."
+        )
+    if total_count > fetched_count:
+        warnings.append(
+            f"Points drawn from {fetched_count:,} of {total_count:,} studies (sample)."
+        )
+
+    return VisualizationResponse(
+        visualization=Visualization(
+            type="scatter",
+            title=title,
+            encoding={"x": {"field": x_field}, "y": {"field": y_field}},
+            data=points,
+            filters=filters,
+        ),
+        response_metadata=ResponseMetadata(
+            total_count=total_count,
+            fetched_count=fetched_count,
+            truncated=total_count > fetched_count,
+            count_verified=count_verified,
+            counts_exact=False,   # scatter shows raw per-study values, not server counts
+            count_server=total_count if not count_verified else None,
+            query_interpretation=f"Scatter of {x_field} vs {y_field} over {len(points):,} trials",
             warnings=warnings,
         ),
     )

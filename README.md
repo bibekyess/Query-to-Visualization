@@ -74,18 +74,19 @@ Content-Type: application/json
 
 ```
 {
-  "visualization": {
-    "type":     string          — bar_chart | time_series | histogram | network_graph
+  "visualization": {              — null when no trials matched (see "message")
+    "type":     string          — bar_chart | time_series | histogram | scatter | grouped_bar | network_graph
     "title":    string          — human-readable chart title
     "encoding": {               — Vega-Lite-style visual channel mapping
       "x":      {"field": string},
       "y":      {"field": string},
-      "series": {"field": string}  (optional, grouped charts)
+      "series": {"field": string}  (grouped_bar / multi-series time_series)
       // network_graph:
       "nodes":  {"field": string, "weight": string},
       "edges":  {"field": string}
     }
-    "data":  [ {<field>: value, "count": int, "citations": [...]} ]
+    "data":  [ {<field>: value, "count": int, "citations": [...]} ]      — bar/time/histogram/grouped_bar
+             [ {"x": num, "y": num, "nct_id": str, "citations": [...]} ] — scatter (one point per trial)
              — null for network_graph (use nodes/edges instead)
     "nodes": [ {"id": string, "label": string, "weight": int} ]
              — network_graph only
@@ -93,6 +94,7 @@ Content-Type: application/json
              — network_graph only
     "filters": { ...applied filters + "source": "clinicaltrials.gov" }
   },
+  "message": string | null        — set only when visualization is null (no matching trials)
   "response_metadata": {
     "total_count":         int     — authoritative count from ClinicalTrials.gov
     "fetched_count":       int     — records actually fetched & aggregated
@@ -155,7 +157,8 @@ app/
 
   tools/
     store.py           # in-memory dataset/result handles
-    search.py  aggregate.py  network.py  finalize.py   # the four agent tools
+    search.py  aggregate.py  scatter.py  network.py  finalize.py   # the agent tools
+                       # (aggregate.py also holds aggregate_comparison; finalize.py holds finalize_notice)
 
   clinicaltrials/
     client.py          # HTTP + pagination + count
@@ -175,14 +178,17 @@ plus the `group_by` enum in `agent/tool_schemas.py`.
 
 ### Tool-calling agent (not code-gen, not single-plan)
 
-The LLM orchestrates via four typed tools:
+The LLM orchestrates via typed tools:
 
 | Tool | Purpose |
 |------|---------|
 | `search_trials` | Fetch + cache matching studies; return `dataset_id` |
 | `aggregate` | Group by a field; return `result_id` + group labels |
+| `aggregate_comparison` | Compare 2+ datasets on a shared field → `result_id` + group/series labels |
+| `scatter_points` | Two continuous fields per trial → `result_id` + point count |
 | `build_network` | Co-occurrence network; return `result_id` + summary |
 | `finalize_visualization` | Assemble & return the final spec |
+| `finalize_notice` | Terminal "no matching trials" response (code-gated; see below) |
 
 **Key invariant:** the LLM never sees or writes numeric data values. All
 counts, buckets, and co-occurrence weights are computed deterministically in
@@ -198,11 +204,23 @@ encoding labels (axis names).
 
 ### Hybrid viz type selection
 
-1. **Deterministic rules** in `app/viz/selector.py` map the `group_by` field shape to
-   chart type: time fields → `time_series`, continuous fields → `histogram`,
-   default → `bar_chart`.
-2. The LLM may pass `viz_hint` to break ties (e.g. `"scatter"`, `"network_graph"`).
-   An unrecognised hint is ignored.
+1. **Deterministic rules** in `app/viz/selector.py` map the data shape to chart
+   type: comparison (multi-series) → `grouped_bar` (or multi-series `time_series`
+   for date fields), time fields → `time_series`, continuous buckets → `histogram`,
+   default → `bar_chart`. `scatter` and `network_graph` come from their dedicated
+   tools (`scatter_points`, `build_network`).
+2. The LLM may pass `viz_hint` to break ties among the categorical types. An
+   unrecognised hint is ignored — the deterministic rule wins.
+
+### Code-gated "no data" response (no forced charts)
+
+A query that matches no trials (even after broadening) returns
+`visualization: null` with a human-readable `message`, instead of crashing or
+inventing an empty chart. Crucially this path is **gated in code**, not by LLM
+judgment: `finalize_notice` is only honored when no `search_trials` call produced
+data. If data exists, the agent is forced to visualize it — so a chartable query
+can never be declined. There is also a turn-limit backstop that returns the same
+notice rather than raising.
 
 ### Deep citations: free from aggregation
 
@@ -254,12 +272,13 @@ to ≤ 5 calls for most queries.
 | `bar_chart` | Default for categorical distributions |
 | `time_series` | `group_by` is `start_year` / `start_month` / `completion_year` |
 | `histogram` | `group_by` is `enrollment_bucket` |
+| `grouped_bar` | `aggregate_comparison` over 2+ datasets (categorical shared field) |
+| `scatter` | `scatter_points` over two continuous fields (one point per trial) |
 | `network_graph` | `build_network` is called |
 
-`scatter` and `grouped_bar` are intentionally **not** offered: the single-dataset
-aggregate path produces category-vs-count data, and labeling that as a scatter
-(which needs two continuous variables) or a grouped bar (which needs a second
-series) would be misleading. Both are tracked under Future Work below.
+A comparison on a *date* field (e.g. "Drug A vs Drug B per year") becomes a
+multi-series `time_series` rather than a `grouped_bar`. Scatter fields:
+`enrollment`, `duration_days` (completion − start), `start_year`.
 
 ### Supported `group_by` fields for `aggregate`
 
@@ -271,13 +290,12 @@ series) would be misleading. Both are tracked under Future Work below.
 
 ## Limitations & Future Work
 
-- **Comparison queries & grouped bars** ("Drug A vs Drug B", "two conditions"):
-  the current design is one dataset per request. Side-by-side comparison requires
-  a `series_by` dimension (or merging two datasets), which would also unlock a
-  genuine `grouped_bar`. Feasible, not yet built.
-- **Scatter plots**: need two continuous fields per study (e.g. enrollment vs
-  duration). Not offered today because the aggregate path is categorical-vs-count;
-  a dedicated two-field extraction path is the next step.
+- **Comparison via separate searches**: `aggregate_comparison` compares two or
+  more datasets, each from its own `search_trials` call. Comparing along a *field
+  within one dataset* (e.g. industry vs academic across phases without a second
+  search) would need a `series_by` dimension — not yet built. Note: when a
+  structured filter pins the very dimension being compared, it constrains every
+  series.
 - **Approximate counts for unbounded fields**: when a `condition` / `sponsor_name`
   / `country` query is truncated, those bars are sampled (flagged via
   `counts_exact=false`). A two-pass refinement — sample to find candidate top-N
@@ -298,6 +316,10 @@ series) would be misleading. Both are tracked under Future Work below.
   eviction. Under sustained load a Redis or SQLite backing store would fit.
 - **No streaming**: the endpoint is synchronous; very broad queries (near the
   10,000-record cap) may take 15–30 seconds.
+- **Query Regeneration**: Right now, we are just taking a simple query, when
+  we later deal with multi-hop questions or multi-round conversations, we
+  may need to consider this generations.
+  
 
 ---
 
@@ -325,9 +347,11 @@ assistant. Claude was used to:
    (field projection, Essie filters, `countTotal`, pagination token names).
 2. The numeric anti-hallucination invariant was verified structurally: no data
    values pass through the LLM's context — only UUIDs and field name strings.
-3. A unit-test suite (`uv run pytest`, 33 tests, no network) covers the
-   deterministic core — extractors, the Essie filter builder, the viz selector,
-   both count tiers in `aggregate` (stubbed count fn), and network co-occurrence.
+3. A unit-test suite (`uv run pytest`, 53 tests, no network) covers the
+   deterministic core — extractors (incl. trial-duration parsing), the Essie
+   filter builder, the viz selector, both count tiers in `aggregate` (stubbed
+   count fn), multi-dataset comparison, scatter point building, network
+   co-occurrence, and the code-gated "no data" notice (scripted agent loop).
 4. Exact-count correctness was spot-checked against the live API: per-bucket bar
    values match standalone `countTotal` queries (e.g. diabetes Phase 3 = 2,446).
 5. End-to-end runs against the live API produced the 6 example outputs in
@@ -342,8 +366,9 @@ viz selector rather than pure LLM selection).
 
 ## Example Runs
 
-Six end-to-end examples are in `examples/`, each containing the full request and
-response JSON. To regenerate them: `uv run python tests/run_examples.py`.
+End-to-end examples are in `examples/`, each containing the full request and
+response JSON. To (re)generate them, start the server then run
+`uv run python tests/run_examples.py`.
 
 | File | Visualization type | Query |
 |------|--------------------|-------|
@@ -353,3 +378,5 @@ response JSON. To regenerate them: `uv run python tests/run_examples.py`.
 | `04_network_graph.json` | `network_graph` | Condition co-occurrence network in lung cancer trials |
 | `05_histogram.json` | `histogram` | Enrollment size distribution for Phase 3 cancer trials |
 | `06_sponsor_class.json` | `bar_chart` | Cardiovascular trials by sponsor type |
+| `07_comparison_grouped_bar.json` | `grouped_bar` | Pembrolizumab vs nivolumab phase distribution |
+| `08_scatter.json` | `scatter` | Enrollment vs trial duration for Phase 3 cancer trials |

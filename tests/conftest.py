@@ -64,8 +64,10 @@ def study_factory():
 @pytest.fixture(autouse=True)
 def clean_store():
     """Reset the module-level in-memory store before and after every test."""
-    for d in (store.DATASETS, store.DATASET_META, store.AGG_RESULTS, store.NET_RESULTS):
+    for d in (store.DATASETS, store.DATASET_META, store.AGG_RESULTS,
+              store.NET_RESULTS, store.SCATTER_RESULTS):
         d.clear()
     yield
-    for d in (store.DATASETS, store.DATASET_META, store.AGG_RESULTS, store.NET_RESULTS):
+    for d in (store.DATASETS, store.DATASET_META, store.AGG_RESULTS,
+              store.NET_RESULTS, store.SCATTER_RESULTS):
         d.clear()

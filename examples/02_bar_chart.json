@@ -10,7 +10,7 @@
   "response": {
     "visualization": {
       "type": "bar_chart",
-      "title": "Distribution of Diabetes Trials Across Phases",
+      "title": "Distribution of Diabetes Clinical Trials Across Phases",
       "encoding": {
         "x": {
           "field": "phase"
@@ -154,6 +154,7 @@
         "source": "clinicaltrials.gov"
       }
     },
+    "message": null,
     "response_metadata": {
       "total_count": 23959,
       "fetched_count": 5000,

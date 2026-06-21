@@ -11,9 +11,18 @@ Data flow:
   build_network() → reads store → stores graph data   → returns result_id
   finalize_visualization() → reads stored result → builds the API response
 """
-from app.tools.aggregate import aggregate
-from app.tools.finalize import finalize_visualization
+from app.tools.aggregate import aggregate, aggregate_comparison
+from app.tools.finalize import finalize_notice, finalize_visualization
 from app.tools.network import build_network
+from app.tools.scatter import scatter_points
 from app.tools.search import search_trials
 
-__all__ = ["search_trials", "aggregate", "build_network", "finalize_visualization"]
+__all__ = [
+    "search_trials",
+    "aggregate",
+    "aggregate_comparison",
+    "build_network",
+    "scatter_points",
+    "finalize_visualization",
+    "finalize_notice",
+]

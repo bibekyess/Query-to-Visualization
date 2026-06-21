@@ -11,7 +11,7 @@
   "response": {
     "visualization": {
       "type": "bar_chart",
-      "title": "Countries with Most Recruiting Breast Cancer Trials",
+      "title": "Top 20 Countries with Most Recruiting Breast Cancer Trials",
       "encoding": {
         "x": {
           "field": "country"
@@ -450,6 +450,7 @@
         "source": "clinicaltrials.gov"
       }
     },
+    "message": null,
     "response_metadata": {
       "total_count": 2475,
       "fetched_count": 2475,

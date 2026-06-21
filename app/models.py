@@ -88,5 +88,8 @@ class ResponseMetadata(BaseModel):
 
 
 class VisualizationResponse(BaseModel):
-    visualization: Visualization
+    # visualization is None only for the "no data" notice path (see finalize_notice);
+    # message carries the human-readable explanation in that case.
+    visualization: Visualization | None = None
+    message: str | None = None
     response_metadata: ResponseMetadata

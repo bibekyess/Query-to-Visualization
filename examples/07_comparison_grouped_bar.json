@@ -1,0 +1,323 @@
+{
+  "example": "07_comparison_grouped_bar",
+  "description": "Pembrolizumab vs nivolumab phase distribution (grouped_bar)",
+  "request": {
+    "query": "Compare the phase distribution of pembrolizumab and nivolumab trials."
+  },
+  "response": {
+    "visualization": {
+      "type": "grouped_bar",
+      "title": "Phase Distribution of Pembrolizumab vs Nivolumab Clinical Trials",
+      "encoding": {
+        "x": {
+          "field": "phase"
+        },
+        "y": {
+          "field": "count"
+        },
+        "series": {
+          "field": "series"
+        }
+      },
+      "data": [
+        {
+          "phase": "Phase 2",
+          "series": "Pembrolizumab",
+          "count": 1726,
+          "citations": [
+            {
+              "nct_id": "NCT03428802",
+              "excerpt": "PHASE2",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT03193931",
+              "excerpt": "PHASE2",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT06484153",
+              "excerpt": "PHASE1, PHASE2",
+              "source_field": "protocolSection.designModule.phases"
+            }
+          ]
+        },
+        {
+          "phase": "Phase 2",
+          "series": "Nivolumab",
+          "count": 1153,
+          "citations": [
+            {
+              "nct_id": "NCT04267146",
+              "excerpt": "PHASE1, PHASE2",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT03799445",
+              "excerpt": "PHASE2",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT02754141",
+              "excerpt": "PHASE1, PHASE2",
+              "source_field": "protocolSection.designModule.phases"
+            }
+          ]
+        },
+        {
+          "phase": "Phase 1",
+          "series": "Pembrolizumab",
+          "count": 1026,
+          "citations": [
+            {
+              "nct_id": "NCT06484153",
+              "excerpt": "PHASE1, PHASE2",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT05576077",
+              "excerpt": "PHASE1",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT03371979",
+              "excerpt": "PHASE1, PHASE2",
+              "source_field": "protocolSection.designModule.phases"
+            }
+          ]
+        },
+        {
+          "phase": "Phase 1",
+          "series": "Nivolumab",
+          "count": 706,
+          "citations": [
+            {
+              "nct_id": "NCT04267146",
+              "excerpt": "PHASE1, PHASE2",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT03508570",
+              "excerpt": "PHASE1",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT02754141",
+              "excerpt": "PHASE1, PHASE2",
+              "source_field": "protocolSection.designModule.phases"
+            }
+          ]
+        },
+        {
+          "phase": "Phase 3",
+          "series": "Pembrolizumab",
+          "count": 351,
+          "citations": [
+            {
+              "nct_id": "NCT05155254",
+              "excerpt": "PHASE3",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT05687266",
+              "excerpt": "PHASE3",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT06320353",
+              "excerpt": "PHASE3",
+              "source_field": "protocolSection.designModule.phases"
+            }
+          ]
+        },
+        {
+          "phase": "Phase 3",
+          "series": "Nivolumab",
+          "count": 183,
+          "citations": [
+            {
+              "nct_id": "NCT05568095",
+              "excerpt": "PHASE3",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT06097728",
+              "excerpt": "PHASE3",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT04564157",
+              "excerpt": "PHASE3",
+              "source_field": "protocolSection.designModule.phases"
+            }
+          ]
+        },
+        {
+          "phase": "N/A",
+          "series": "Pembrolizumab",
+          "count": 52,
+          "citations": [
+            {
+              "nct_id": "NCT04698681",
+              "excerpt": "NA",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT07633353",
+              "excerpt": "NA",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT06599619",
+              "excerpt": "NA",
+              "source_field": "protocolSection.designModule.phases"
+            }
+          ]
+        },
+        {
+          "phase": "N/A",
+          "series": "Nivolumab",
+          "count": 49,
+          "citations": [
+            {
+              "nct_id": "NCT06599619",
+              "excerpt": "NA",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT03132493",
+              "excerpt": "NA",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT07428252",
+              "excerpt": "NA",
+              "source_field": "protocolSection.designModule.phases"
+            }
+          ]
+        },
+        {
+          "phase": "Early Phase 1",
+          "series": "Pembrolizumab",
+          "count": 52,
+          "citations": [
+            {
+              "nct_id": "NCT03514121",
+              "excerpt": "EARLY_PHASE1",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT04674306",
+              "excerpt": "EARLY_PHASE1",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT01789827",
+              "excerpt": "EARLY_PHASE1",
+              "source_field": "protocolSection.designModule.phases"
+            }
+          ]
+        },
+        {
+          "phase": "Early Phase 1",
+          "series": "Nivolumab",
+          "count": 33,
+          "citations": [
+            {
+              "nct_id": "NCT07210632",
+              "excerpt": "EARLY_PHASE1",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT04891718",
+              "excerpt": "EARLY_PHASE1",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT03519308",
+              "excerpt": "EARLY_PHASE1",
+              "source_field": "protocolSection.designModule.phases"
+            }
+          ]
+        },
+        {
+          "phase": "Phase 4",
+          "series": "Pembrolizumab",
+          "count": 17,
+          "citations": [
+            {
+              "nct_id": "NCT06824792",
+              "excerpt": "PHASE4",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT03715205",
+              "excerpt": "PHASE4",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT03134456",
+              "excerpt": "PHASE4",
+              "source_field": "protocolSection.designModule.phases"
+            }
+          ]
+        },
+        {
+          "phase": "Phase 4",
+          "series": "Nivolumab",
+          "count": 18,
+          "citations": [
+            {
+              "nct_id": "NCT06934057",
+              "excerpt": "PHASE4",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT07459543",
+              "excerpt": "PHASE4",
+              "source_field": "protocolSection.designModule.phases"
+            },
+            {
+              "nct_id": "NCT04707547",
+              "excerpt": "PHASE4",
+              "source_field": "protocolSection.designModule.phases"
+            }
+          ]
+        }
+      ],
+      "nodes": null,
+      "edges": null,
+      "filters": {
+        "comparison": [
+          {
+            "label": "Pembrolizumab",
+            "query": {
+              "query.intr": "pembrolizumab"
+            }
+          },
+          {
+            "label": "Nivolumab",
+            "query": {
+              "query.intr": "nivolumab"
+            }
+          }
+        ],
+        "source": "clinicaltrials.gov"
+      }
+    },
+    "message": null,
+    "response_metadata": {
+      "total_count": 4885,
+      "fetched_count": 2000,
+      "time_granularity": null,
+      "truncated": true,
+      "count_verified": false,
+      "counts_exact": true,
+      "count_server": 4885,
+      "query_interpretation": "Compared 2 series by 'phase' across 2,000 fetched studies",
+      "warnings": [
+        "Bar counts are exact server-side totals over all 4,885 studies; citation excerpts are sampled from 2,000 fetched records."
+      ]
+    }
+  }
+}
