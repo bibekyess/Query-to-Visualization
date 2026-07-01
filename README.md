@@ -5,12 +5,6 @@ fetching live data from the **ClinicalTrials.gov v2 API** and returning a
 structured **visualization specification** (JSON) — ready for a frontend to render.
 The backend never renders charts itself.
 
-## Demo URLs
-
-- **DEMO UI:** http://52.79.177.13:9072
-- **API Backend:** http://52.79.177.13:9072/docs
-- **Logs:** http://52.79.177.13:9073/logs
-
 ---
 
 ## How to Run
