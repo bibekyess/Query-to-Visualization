@@ -38,6 +38,18 @@ class QueryRequest(BaseModel):
     filters: Filters | None = None
 
 
+# --- Chat request ---
+
+class ChatMessage(BaseModel):
+    role: str                        # "user" | "assistant"
+    content: str
+
+
+class ChatRequest(BaseModel):
+    message: str                              # latest user message — required
+    history: list[ChatMessage] = Field(default_factory=list)   # prior turns (text only)
+
+
 # --- Citation (deep citations bonus) ---
 
 class Citation(BaseModel):
