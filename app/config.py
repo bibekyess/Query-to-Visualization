@@ -18,11 +18,20 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     # --- LLM provider ---
+    # llm_provider selects which SDK drives the chat agent: "openai" or "anthropic".
+    # The /visualize agent keeps using OpenAI tool-calling; the chat agent honors this switch.
+    llm_provider: str = "openai"
     openai_api_key: SecretStr = ""
     openai_model: str = "gpt-4o"
+    anthropic_api_key: SecretStr = ""
+    anthropic_model: str = "claude-opus-4-8"
 
     # --- ClinicalTrials.gov API ---
     ct_base_url: str = "https://clinicaltrials.gov/api/v2"
+
+    # --- PubMed (NCBI E-utilities) ---
+    pubmed_base_url: str = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
+    ncbi_api_key: SecretStr = ""     # optional; raises rate limit from 3 to 10 req/s
 
     # --- Fetch caps ---
     default_max_records: int = 5_000     # per-query default when the agent doesn't override
@@ -34,6 +43,10 @@ class Settings(BaseSettings):
 
     # --- Agent loop ---
     agent_max_turns: int = 12            # safety bound on tool-calling iterations
+
+    # --- Chat agent ---
+    chat_max_turns: int = 8              # safety bound on chat tool-calling iterations
+    chat_max_tokens: int = 16000         # per-turn output cap (streaming)
 
     # --- Logging ---
     # debug -> human-readable ConsoleRenderer; otherwise machine-readable JSON.

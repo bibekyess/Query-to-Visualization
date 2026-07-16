@@ -1,19 +1,41 @@
-# ClinicalTrials.gov Query-to-Visualization Agent
+# Medical Research Assistant — Agentic Chatbot + Query-to-Visualization
 
-An AI backend that answers natural-language questions about clinical trials by
-fetching live data from the **ClinicalTrials.gov v2 API** and returning a
-structured **visualization specification** (JSON) — ready for a frontend to render.
-The backend never renders charts itself.
+A medical research assistant that answers natural-language questions by grounding
+its answers in **live data**: peer-reviewed literature from **PubMed** and study
+records + aggregate charts from the **ClinicalTrials.gov v2 API**. It ships as:
+
+1. **An agentic chatbot** (Cheiron-style UI) that decides per question whether to
+   search the literature, look up specific trials, or draw a live chart — and cites
+   every claim inline with a linked sources panel. This is the primary experience at `/`.
+2. **The original Query-to-Visualization agent** (`POST /visualize`) — NL query →
+   structured Vega-Lite-shaped visualization spec, unchanged. Classic UI at `/static/index.html`.
+3. **A standalone MCP server** (`mcp_server.py`) exposing the same search +
+   visualization tools to any MCP client (Claude Desktop, etc.). The chatbot backend
+   and the MCP server consume the **same tool layer**, so logic lives in one place.
+
+```
+                    ┌──────────────────────────────────────────┐
+   Chatbot UI  ───▶ │  /chat  (SSE stream)  →  chat agent loop  │
+   (chat.html)      │            │                              │
+                    │            ├── search_pubmed ─────────────┼──▶ PubMed (E-utilities)
+   MCP client  ───▶ │  mcp_server.py                            │
+   (Claude, …)      │            ├── search_clinical_trials ────┼──▶ ClinicalTrials.gov
+                    │            └── create_visualization ──────┼──▶ run_agent → viz spec
+                    └──────────────────────────────────────────┘
+```
 
 ---
 
 ## How to Run
 
-**Prerequisites:** an OpenAI API key. Then set up your env file:
+**Prerequisites:** an LLM API key (OpenAI *or* Anthropic). PubMed needs no key. Then:
 
 ```bash
-cp .env.example .env        # then edit .env: OPENAI_API_KEY=sk-...
+cp .env.example .env        # set LLM_PROVIDER + the matching API key
 ```
+
+- `LLM_PROVIDER=openai` (default) → set `OPENAI_API_KEY`
+- `LLM_PROVIDER=anthropic` → set `ANTHROPIC_API_KEY` (uses `claude-opus-4-8`)
 
 ### Option A — Docker (recommended)
 
@@ -21,7 +43,7 @@ cp .env.example .env        # then edit .env: OPENAI_API_KEY=sk-...
 docker compose up -d
 ```
 
-- API → http://localhost:8000 (web UI at `/`, interactive docs at `/docs`)
+- App → http://localhost:8000 (chatbot at `/`, classic viz UI at `/static/index.html`, docs at `/docs`)
 - Live logs (Dozzle) → http://localhost:8080/logs
 
 ### Option B — Local with [uv](https://github.com/astral-sh/uv)
@@ -31,7 +53,32 @@ uv sync                     # install dependencies (Python 3.11+)
 uv run python main.py       # → http://localhost:8000
 ```
 
-### Make a request
+### The chatbot
+
+Open http://localhost:8000 and ask a question. The assistant streams its answer,
+shows a live "Searching PubMed…" / "Building visualization…" activity pill while
+tools run, renders charts inline, and lists numbered sources you can click. Inline
+`[1]`-style citation chips jump to the matching source card. Try:
+
+- *"How does pembrolizumab work in cancer treatment?"* → cited literature answer
+- *"Chart the number of GLP-1 trials per year since 2015"* → inline time-series
+- *"Compare the phase distribution of semaglutide vs tirzepatide trials"* → grouped bar
+
+Under the hood the chatbot streams Server-Sent Events from `POST /chat`
+(`{message, history}` → `token` / `tool_start` / `sources` / `visualization` / `done`).
+
+### The MCP server
+
+```bash
+uv run python mcp_server.py              # stdio transport (for Claude Desktop et al.)
+MCP_TRANSPORT=http uv run python mcp_server.py   # streamable HTTP on :8001
+```
+
+Exposes `search_pubmed`, `search_clinical_trials`, and `create_visualization`.
+`create_visualization` returns a Vega-Lite-shaped artifact plus a text summary,
+so artifact-capable clients can render the chart.
+
+### The classic visualization API
 
 ```bash
 curl -X POST http://localhost:8000/visualize \
@@ -42,12 +89,9 @@ curl -X POST http://localhost:8000/visualize \
   }'
 ```
 
-### Web UI
-
-A single-page frontend ships in `app/static/` and is served at the root. It has a
-**Query** mode (ask a question, render the live result) and a **Load JSON** mode
-(open a bundled `examples/` file or paste a response). Charts render with Vega-Lite,
-networks with vis-network; click any data point to see its source-trial citations.
+The classic single-page UI (`/static/index.html`) has a **Query** mode and a
+**Load JSON** mode; charts render with Vega-Lite, networks with vis-network, and
+clicking any data point shows its source-trial citations.
 
 ---
 

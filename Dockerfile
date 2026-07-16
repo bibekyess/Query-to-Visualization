@@ -12,6 +12,7 @@ RUN uv sync --frozen --no-dev --no-install-project
 # Copy application source
 COPY app/ ./app/
 COPY examples/ ./examples/
+COPY mcp_server.py ./mcp_server.py
 
 # Run as non-root
 RUN adduser --system --no-create-home appuser
