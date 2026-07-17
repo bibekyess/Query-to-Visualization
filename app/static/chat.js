@@ -57,7 +57,9 @@ function inline(text) {
   return text
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>');
+    .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>')
+    // _italic_ — only when the underscores hug word boundaries (avoids splitting NCT_IDs / snake_case)
+    .replace(/(^|\s)_([^_]+)_(?=\s|[.,;:!?)]|$)/g, '$1<em>$2</em>');
 }
 
 // Replace [n] and [n][m] with clickable chips linked to the sources map.
@@ -93,7 +95,7 @@ function addAssistantMessage() {
     <div class="msg-avatar">✦</div>
     <div class="msg-body">
       <div class="msg-role">Cheira</div>
-      <div class="msg-tools"></div>
+      <div class="msg-steps"></div>
       <div class="msg-content"></div>
       <div class="msg-viz"></div>
       <div class="msg-sources"></div>
@@ -101,11 +103,69 @@ function addAssistantMessage() {
   el.appendChild(div);
   scrollToBottom();
   return {
-    tools: div.querySelector('.msg-tools'),
+    steps: div.querySelector('.msg-steps'),
     content: div.querySelector('.msg-content'),
     viz: div.querySelector('.msg-viz'),
     sources: div.querySelector('.msg-sources'),
+    stepById: {},
+    stepCount: 0,
   };
+}
+
+// ── Agentic step timeline (Claude Code–style) ───────────────
+function ensureSteps(ui) {
+  if (ui.steps.firstChild) return ui.steps.firstChild;
+  const box = document.createElement('div');
+  box.className = 'steps open';
+  box.innerHTML = `
+    <div class="steps-head" onclick="this.parentNode.classList.toggle('open')">
+      <span class="steps-head-spinner"></span>
+      <span class="steps-head-label">Working…</span>
+      <span class="chev">▶</span>
+    </div>
+    <div class="steps-list"></div>`;
+  ui.steps.appendChild(box);
+  return box;
+}
+
+function addStep(ui, ev) {
+  const box = ensureSteps(ui);
+  const list = box.querySelector('.steps-list');
+  const row = document.createElement('div');
+  row.className = 'step';
+  row.dataset.id = ev.id;
+  row.innerHTML = `
+    <div class="step-icon"><span class="sp"></span></div>
+    <div class="step-main">
+      <div class="step-title">${escapeHtml(ev.label)}</div>
+      ${ev.detail ? `<div class="step-detail" title="${escapeHtml(ev.detail)}">${escapeHtml(ev.detail)}</div>` : ''}
+    </div>`;
+  list.appendChild(row);
+  ui.stepById[ev.id] = row;
+  ui.stepCount += 1;
+}
+
+function endStep(ui, ev) {
+  const row = ui.stepById[ev.id];
+  if (!row) return;
+  row.querySelector('.step-icon').classList.add('done');
+  row.querySelector('.step-icon').innerHTML = '';
+  if (ev.result) {
+    const r = document.createElement('div');
+    r.className = 'step-result';
+    r.innerHTML = `<b>${escapeHtml(ev.result)}</b>`;
+    row.querySelector('.step-main').appendChild(r);
+  }
+}
+
+function finishSteps(ui) {
+  const box = ui.steps.firstChild;
+  if (!box) return;
+  box.classList.remove('open');  // collapse for a clean final view
+  const spinner = box.querySelector('.steps-head-spinner');
+  if (spinner) spinner.outerHTML = '<span class="steps-head-done">✓</span>';
+  const label = box.querySelector('.steps-head-label');
+  if (label) label.textContent = `Ran ${ui.stepCount} step${ui.stepCount !== 1 ? 's' : ''}`;
 }
 
 // ── Send / stream ────────────────────────────────────────────
@@ -129,7 +189,6 @@ async function sendMessage(event) {
   let rawText = '';
   let sourceByIndex = {};
   let allSources = [];
-  const activePills = {};   // tool name → pill element
 
   try {
     const resp = await fetch('/chat', {
@@ -168,13 +227,10 @@ async function sendMessage(event) {
           rerender();
           scrollToBottom();
         } else if (ev.type === 'tool_start') {
-          if (!activePills[ev.tool]) {
-            const pill = document.createElement('div');
-            pill.className = 'tool-activity';
-            pill.innerHTML = `<span class="tool-spinner"></span><span>${escapeHtml(ev.label)}…</span>`;
-            ui.tools.appendChild(pill);
-            activePills[ev.tool] = pill;
-          }
+          addStep(ui, ev);
+          scrollToBottom();
+        } else if (ev.type === 'tool_end') {
+          endStep(ui, ev);
           scrollToBottom();
         } else if (ev.type === 'sources') {
           allSources = ev.sources;
@@ -182,23 +238,19 @@ async function sendMessage(event) {
           for (const s of ev.sources) sourceByIndex[s.index] = s;
           renderSources(ui.sources, allSources);
           rerender();
-          // Mark tool pills done as their results arrive.
-          Object.values(activePills).forEach(markPillDone);
         } else if (ev.type === 'visualization') {
           const card = document.createElement('div');
           ui.viz.appendChild(card);
-          markPillDone(activePills['create_visualization']);
           VizRenderer.render(card, ev.payload.response ?? ev.payload).then(scrollToBottom);
         } else if (ev.type === 'error') {
           ui.content.innerHTML += `<div class="err">⚠ ${escapeHtml(ev.message)}</div>`;
-        } else if (ev.type === 'done') {
-          Object.values(activePills).forEach(markPillDone);
         }
       }
     }
 
     // Finalize
     state.streaming = false;
+    finishSteps(ui);
     rerender();
     state.history.push({ role: 'user', content: text });
     state.history.push({ role: 'assistant', content: rawText });
@@ -207,18 +259,14 @@ async function sendMessage(event) {
     ui.content.innerHTML += `<div class="err">⚠ ${escapeHtml(e.message)}</div>`;
   } finally {
     state.streaming = false;
+    finishSteps(ui);
     setSendEnabled(true);
     $('input').focus();
   }
   return false;
 }
 
-function markPillDone(pill) {
-  if (!pill || pill.classList.contains('done')) return;
-  pill.classList.add('done');
-  const label = pill.querySelector('span:last-child').textContent.replace(/…$/, '');
-  pill.innerHTML = `<span class="tool-check">✓</span><span>${escapeHtml(label)}</span>`;
-}
+const _BOOK_ICON = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>';
 
 function renderSources(container, sources) {
   if (!sources.length) { container.innerHTML = ''; return; }
@@ -235,9 +283,18 @@ function renderSources(container, sources) {
           <div class="source-title">${escapeHtml(s.title || s.id)}</div>
           <div class="source-meta">${meta}</div>
         </div>
+        <div class="source-arrow">↗</div>
       </a>`;
   }).join('');
-  container.innerHTML = `<div class="sources"><div class="sources-label">Sources</div>${cards}</div>`;
+  container.innerHTML = `
+    <div class="sources">
+      <div class="sources-head">
+        ${_BOOK_ICON}
+        <span class="sources-title">References</span>
+        <span class="sources-count">${sources.length}</span>
+      </div>
+      ${cards}
+    </div>`;
 }
 
 // Clicking a citation chip scrolls to and flashes its source card.
