@@ -68,6 +68,17 @@ def test_tool_start_carries_label(monkeypatch):
     assert start["label"] == "Searching PubMed"
 
 
+def test_tool_end_pairs_with_start_and_summarizes(monkeypatch):
+    monkeypatch.setitem(tools_mod.TOOL_RUNNERS, "search_pubmed", _fake_pubmed)
+    monkeypatch.setattr(agent_mod, "get_chat_provider", lambda: _FakeProvider())
+    events = list(agent_mod.run_chat("q"))
+    start = next(e for e in events if e["type"] == "tool_start")
+    end = next(e for e in events if e["type"] == "tool_end")
+    # start/end share a step id so the frontend can match them
+    assert start["id"] == end["id"]
+    assert end["result"] == "Found 1 source"
+
+
 def test_source_registry_dedupes_and_numbers():
     reg = SourceRegistry()
     a = reg.add("pubmed:1", {"type": "pubmed", "title": "A"})
