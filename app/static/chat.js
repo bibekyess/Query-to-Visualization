@@ -94,7 +94,7 @@ function addAssistantMessage() {
   div.innerHTML = `
     <div class="msg-avatar">✦</div>
     <div class="msg-body">
-      <div class="msg-role">Cheira</div>
+      <div class="msg-role">Charak</div>
       <div class="msg-steps"></div>
       <div class="msg-content"></div>
       <div class="msg-viz"></div>
