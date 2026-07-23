@@ -4,7 +4,7 @@ A medical research assistant that answers natural-language questions by groundin
 its answers in **live data**: peer-reviewed literature from **PubMed** and study
 records + aggregate charts from the **ClinicalTrials.gov v2 API**. It ships as:
 
-1. **An agentic chatbot** (Cheiron-style UI) that decides per question whether to
+1. **An agentic chatbot**  that decides per question whether to
    search the literature, look up specific trials, or draw a live chart — and cites
    every claim inline with a linked sources panel. This is the primary experience at `/`.
 2. **The original Query-to-Visualization agent** (`POST /visualize`) — NL query →
@@ -23,6 +23,45 @@ records + aggregate charts from the **ClinicalTrials.gov v2 API**. It ships as:
                     │            └── create_visualization ──────┼──▶ run_agent → viz spec
                     └──────────────────────────────────────────┘
 ```
+
+---
+
+## The assistant in action
+
+<p align="center">
+  <img src="docs/screenshots/01_landing.png" alt="Charak — the chatbot landing screen" width="900">
+</p>
+
+Charak decides *per question* whether to search the literature, look up specific
+trials, or draw a live chart — and grounds every claim in a cited source.
+
+**Cited literature answer.** Inline `[n]` chips link to a numbered references panel;
+each source opens the underlying PubMed record or trial:
+
+<p align="center">
+  <img src="docs/screenshots/02_cited_answer.png" alt="A cited literature answer with inline citations and a references panel" width="820">
+</p>
+
+**Live inline visualization.** A time series drawn on the fly from ClinicalTrials.gov,
+with a collapsible agentic step timeline and `Total / Analyzed / Verified` provenance:
+
+<p align="center">
+  <img src="docs/screenshots/03_chart.png" alt="An inline time-series chart of GLP-1 trials per year" width="820">
+</p>
+
+**Comparison across drugs.** A grouped bar assembled from two datasets in one answer:
+
+<p align="center">
+  <img src="docs/screenshots/04_comparison.png" alt="A grouped-bar comparison of semaglutide vs tirzepatide trial phases" width="820">
+</p>
+
+**Co-occurrence network.** Entities that appear together across trials, drawn as an
+interactive graph — with the same provenance pills and an honest truncation notice
+when the network is capped to its top nodes:
+
+<p align="center">
+  <img src="docs/screenshots/05_network.png" alt="A co-occurrence network of conditions in lung cancer trials" width="820">
+</p>
 
 ---
 
