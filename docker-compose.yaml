@@ -4,10 +4,28 @@ services:
   api:
     build: .
     image: bibekyess/query-to-viz-agent:0.1.0
+    # Not published to the public internet — Caddy proxies it over the internal
+    # network. Bound to localhost so it stays reachable for local debugging.
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     env_file:
       - .env
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data      # persists issued TLS certificates across restarts
+      - caddy_config:/config
+    environment:
+      # Forwarded into the Caddyfile's {$SITE_ADDRESS} placeholder.
+      SITE_ADDRESS: ${SITE_ADDRESS:-charak.khururu.com}
+    depends_on:
+      - api
     restart: unless-stopped
 
   dozzle:
@@ -15,8 +33,12 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     environment:
       DOZZLE_FILTER: "label=com.docker.compose.project=query-to-viz-project"
       DOZZLE_AUTH_PROVIDER: none
       DOZZLE_BASE: /logs
+
+volumes:
+  caddy_data:
+  caddy_config:

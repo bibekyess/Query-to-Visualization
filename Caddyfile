@@ -1,0 +1,16 @@
+# Caddy reverse proxy for the Charak UI.
+# Public HTTPS is terminated here; traffic is forwarded to the `api` container
+# over the internal Docker network. TLS certificates are obtained and renewed
+# automatically via Let's Encrypt (requires the domain's DNS to point at this
+# host and ports 80/443 reachable from the internet).
+
+{
+	# Uncomment to receive ACME certificate-expiry notices:
+	# email admin@khururu.com
+}
+
+# Override the domain at deploy time with SITE_ADDRESS if needed.
+{$SITE_ADDRESS:charak.khururu.com} {
+	encode zstd gzip
+	reverse_proxy api:8000
+}

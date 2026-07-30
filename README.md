@@ -1,5 +1,7 @@
 # Medical Research Assistant — Agentic Chatbot + Query-to-Visualization
 
+**Live at [charak.khururu.com](https://charak.khururu.com)**
+
 A medical research assistant that answers natural-language questions by grounding
 its answers in **live data**: peer-reviewed literature from **PubMed** and study
 records + aggregate charts from the **ClinicalTrials.gov v2 API**. It ships as:
