@@ -3,7 +3,7 @@ import json
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import RedirectResponse, StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.agent import run_agent
@@ -36,9 +36,10 @@ app.mount("/examples-data", StaticFiles(directory="examples"), name="examples-da
 
 
 @app.get("/", include_in_schema=False)
-def root() -> RedirectResponse:
-    # The chatbot is the primary experience; the classic viz UI stays at /static/index.html.
-    return RedirectResponse(url="/static/chat.html")
+def root() -> FileResponse:
+    # Serve the chatbot at the site root so the address bar stays clean (no
+    # /static/chat.html redirect). The classic viz UI stays at /static/index.html.
+    return FileResponse("app/static/chat.html")
 
 
 # `def` (not `async def`) because run_agent uses the sync HTTP and OpenAI clients.
