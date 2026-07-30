@@ -341,11 +341,34 @@ To retune behavior, edit `prompts/system.md`; to swap LLM providers, reimplement
 
 ---
 
-## Limitations & What I'd Improve With More Time
+## Testing
+
+The deterministic core is covered by a 58-test offline suite that stubs all HTTP
+(no network needed):
+
+```bash
+uv run pytest
+```
+
+It exercises the extractors, Essie filter builder, viz selector, both count tiers
+(full-corpus and per-bucket `countTotal`), comparison and scatter aggregation,
+network co-occurrence, and the code-gated "no data" path. The anti-hallucination
+invariant is enforced structurally rather than tested behaviorally — the LLM never
+receives a number, so it cannot emit a wrong one.
+
+Exact counts are spot-checked against the live API (e.g. diabetes Phase 3 = 2,446),
+and the 8 fixtures in `examples/` are generated end-to-end and cover every
+visualization type. Every ClinicalTrials.gov v2 capability the code relies on was
+confirmed with a live `curl` first; the verified reference is in
+`CLINICALTRIALS_API_INVESTIGATION.md`.
+
+---
+
+## Known Limitations & Roadmap
 
 **Query coverage**
-- *Synonym resolution* — "Keytruda" isn't mapped to "Pembrolizumab"; a curated
-  synonym map would broaden coverage (highest-value next step).
+- *Synonym resolution* — "Keytruda" is not mapped to "Pembrolizumab". A curated
+  synonym map would broaden coverage.
 - *Within-dataset comparison* — comparing a field *within* one dataset (Phase 2 vs
   Phase 3 of the same set) needs a `series_by` dimension; today each series is its
   own `search_trials` call.
@@ -354,52 +377,33 @@ To retune behavior, edit `prompts/system.md`; to swap LLM providers, reimplement
 
 **Data & counts**
 - *Unbounded fields* (`condition`/`sponsor_name`/`country`) are sampled when
-  truncated (flagged `counts_exact: false`); a two-pass top-N-then-`countTotal`
+  truncated (flagged `counts_exact: false`). A two-pass top-N-then-`countTotal`
   refinement would make them exact.
 
 **Performance & scale**
 - No result caching (repeat queries re-fetch); in-memory handles have no TTL or
-  eviction. A TTL cache / Redis backend would fix both. No streaming, so very broad
-  queries can take 15–30s.
+  eviction. A TTL cache or Redis backend would address both. Broad queries can take
+  15–30s since the visualization API is not streamed.
 
 **Output quality**
-- Network edge weights are raw co-occurrence counts; scaling them into an
+- Network edge weights are raw co-occurrence counts. Scaling them into an
   association-strength metric (Jaccard / PMI / per-trial rate) would distinguish
   genuine associations from coincidental ones in large datasets. Dense scatters
-  lack binning/trend lines; errors return a text `message` rather than structured
-  error codes.
-- Nodes carry only degree-based weights; computing graph metrics (betweenness
+  lack binning/trend lines, and errors return a text `message` rather than
+  structured error codes.
+- Nodes carry only degree-based weights. Computing graph metrics (betweenness
   centrality, community detection) via NetworkX would surface true hubs and
-  clusters — pattern from the [`networkx` skill](https://github.com/K-Dense-AI/scientific-agent-skills) (scientific-agent-skills).
+  clusters.
 
 **Coverage**
-- Only `GET /studies` is used; adding the single-trial endpoint
+- Only `GET /studies` is used. Adding the single-trial endpoint
   (`GET /studies/{nctId}`) and CSV export would enable a trial "zoom-in"
-  (eligibility, contacts, results) and bulk download — both documented in the
-  [`clinicaltrials-database` skill](https://github.com/davila7/claude-code-templates/blob/main/cli-tool/components/skills/scientific/clinicaltrials-database/SKILL.md).
+  (eligibility, contacts, results) and bulk download.
 
 **Robustness**
-- Field/enum reference is static (could use live `/studies/enums`); no explicit
-  schema validate-and-repair step on LLM output; tool-level logging and end-to-end
-  integration tests would aid debugging beyond the 58 unit tests.
+- The field/enum reference is static (could use live `/studies/enums`); there is no
+  explicit schema validate-and-repair step on LLM output. Tool-level logging and
+  end-to-end integration tests would aid debugging beyond the current unit suite.
 - LLM-supplied search terms reach the API unsanitized and third-party trial text in
-  citations is untagged; input sanitization + provenance flagging would harden the
-  data path — per the [`database-lookup` retrieval-contract](https://github.com/K-Dense-AI/scientific-agent-skills) guidance (scientific-agent-skills).
-
----
-
-## AI Tools Used & Validation
-
-Built with **Claude Code** (Anthropic). Claude verified the ClinicalTrials.gov API
-with live `curl` calls (see `CLINICALTRIALS_API_INVESTIGATION.md`), evaluated the
-architecture tradeoffs, generated the implementation, and diagnosed bugs — notably
-the TLS-fingerprinting `403` that forced the switch from `httpx` to stdlib `urllib`.
-
-**Correctness was validated by:**
-1. Confirming every API capability with a live `curl` before coding it.
-2. Enforcing the anti-hallucination invariant structurally (no numbers in LLM context).
-3. A 58-test offline suite (`uv run pytest`) over the deterministic core —
-   extractors, Essie filters, viz selector, both count tiers, comparison, scatter,
-   network co-occurrence, and the code-gated "no data" path.
-4. Spot-checking exact counts against the live API (e.g. diabetes Phase 3 = 2,446).
-5. Generating the 8 `examples/` end-to-end, covering every visualization type.
+  citations is untagged; input sanitization and provenance flagging would harden the
+  data path.
