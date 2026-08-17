@@ -12,22 +12,6 @@ services:
       - .env
     restart: unless-stopped
 
-  caddy:
-    image: caddy:2-alpine
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data      # persists issued TLS certificates across restarts
-      - caddy_config:/config
-    environment:
-      # Forwarded into the Caddyfile's {$SITE_ADDRESS} placeholder.
-      SITE_ADDRESS: ${SITE_ADDRESS:-charak.khururu.com}
-    depends_on:
-      - api
-    restart: unless-stopped
-
   dozzle:
     image: amir20/dozzle:v10.5.0
     volumes:
@@ -39,6 +23,3 @@ services:
       DOZZLE_AUTH_PROVIDER: none
       DOZZLE_BASE: /logs
 
-volumes:
-  caddy_data:
-  caddy_config:

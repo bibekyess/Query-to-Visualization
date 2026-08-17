@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     # The /visualize agent keeps using OpenAI tool-calling; the chat agent honors this switch.
     llm_provider: str = "openai"
     openai_api_key: SecretStr = ""
+    openai_base_url: str = "https://llmapi.khururu.com/v1"
     openai_model: str = "gpt-4o"
     anthropic_api_key: SecretStr = ""
     anthropic_model: str = "claude-opus-4-8"

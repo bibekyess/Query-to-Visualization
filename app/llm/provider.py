@@ -67,7 +67,10 @@ _client: OpenAI | None = None
 def _get_client() -> OpenAI:
     global _client
     if _client is None:
-        _client = OpenAI(api_key=get_settings().openai_api_key.get_secret_value())
+        _client = OpenAI(
+            api_key=get_settings().openai_api_key.get_secret_value(),
+            base_url=get_settings().openai_base_url            
+            )
     return _client
 
 

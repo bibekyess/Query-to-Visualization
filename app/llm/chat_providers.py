@@ -48,7 +48,10 @@ class OpenAIChatProvider:
     def __init__(self) -> None:
         from openai import OpenAI  # local import: only needed when this provider is active
         settings = get_settings()
-        self.client = OpenAI(api_key=settings.openai_api_key.get_secret_value())
+        self.client = OpenAI(
+            api_key=settings.openai_api_key.get_secret_value(),
+            base_url=settings.openai_base_url
+            )
         self.model = settings.openai_model
         self.max_tokens = settings.chat_max_tokens
 
